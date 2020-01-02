@@ -38,10 +38,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CrescentCove, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\CrescentCove\src\CrescentCove\bin\Release\CrescentCove.dll</HintPath>
-    </Reference>
     <Reference Include="FFXIV_ACT_Plugin.Common, Version=2.0.2.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\FFXIV_ACT_Plugin.Common.dll</HintPath>
@@ -72,6 +68,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CrescentCove">
+      <Version>0.1.3</Version>
+    </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
       <Version>1.3.2</Version>
     </PackageReference>
