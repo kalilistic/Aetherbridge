@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using FFXIV_ACT_Plugin.Common.Models;
 
@@ -8,6 +9,9 @@ namespace ACT_FFXIV_Aetherbridge.Test.Mock
     public class FFXIVACTPluginWrapperMock : IFFXIVACTPluginWrapper
     {
         private readonly List<Combatant> _combatants;
+        private List<Zone> _zones;
+        public FFXIV_ACT_Plugin.Common.Language CurrentLanguage { get; set; } =
+            FFXIV_ACT_Plugin.Common.Language.English;
 
         public FFXIVACTPluginWrapperMock()
         {
@@ -74,6 +78,12 @@ namespace ACT_FFXIV_Aetherbridge.Test.Mock
                     Name = "John Smith"
                 }
             };
+
+            _zones = new List<Zone>();
+            for (var i = 0; i < 1000; i++)
+            {
+                _zones.Add(new Zone((uint)i, "ZoneName"));
+            }
         }
 
         public void DeInit()
@@ -81,9 +91,9 @@ namespace ACT_FFXIV_Aetherbridge.Test.Mock
             throw new NotImplementedException();
         }
 
-        public FFXIV_ACT_Plugin.Common.Language GetSelectedLanguageId()
+        public FFXIV_ACT_Plugin.Common.Language GetSelectedLanguage()
         {
-            return FFXIV_ACT_Plugin.Common.Language.English;
+            return CurrentLanguage;
         }
 
         public uint GetCurrentTerritoryId()
@@ -127,7 +137,7 @@ namespace ACT_FFXIV_Aetherbridge.Test.Mock
 
         public List<Zone> GetZoneList()
         {
-            throw new NotImplementedException();
+	        return _zones;
         }
     }
 }

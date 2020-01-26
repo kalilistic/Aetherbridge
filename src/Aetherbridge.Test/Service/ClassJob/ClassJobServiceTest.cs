@@ -1,4 +1,5 @@
-﻿using FFXIV.CrescentCove;
+﻿using ACT_FFXIV_Aetherbridge.Test.Mock;
+using FFXIV.CrescentCove;
 using NUnit.Framework;
 
 namespace ACT_FFXIV_Aetherbridge.Test.Service.ClassJob
@@ -9,10 +10,16 @@ namespace ACT_FFXIV_Aetherbridge.Test.Service.ClassJob
         [SetUp]
         public void TestInitialize()
         {
-            const string classJobsStr = "2pugilistPGL30Pugilist2";
+            var aetherbridge = (AetherbridgeMock) AetherbridgeMock.GetInstance();
+            var language = new Language(1, "English");
+            aetherbridge.CurrentLanguage = language;
+            var gameDataManager = new GameDataManager();
+            var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
+            var languageService = new LanguageService(aetherbridge, languageRepository);
             IGameDataRepository<FFXIV.CrescentCove.ClassJob> classJobRepository =
-                new GameDataRepository<FFXIV.CrescentCove.ClassJob>(classJobsStr);
-            _classJobService = new ClassJobService(classJobRepository);
+                new GameDataRepository<FFXIV.CrescentCove.ClassJob>(gameDataManager.ClassJob);
+            _classJobService = new ClassJobService(languageService, classJobRepository);
+            _classJobService.AddLanguage(language);
         }
 
         private ClassJobService _classJobService;

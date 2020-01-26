@@ -1,4 +1,5 @@
-﻿using FFXIV.CrescentCove;
+﻿using ACT_FFXIV_Aetherbridge.Test.Mock;
+using FFXIV.CrescentCove;
 using NUnit.Framework;
 
 namespace ACT_FFXIV_Aetherbridge.Test.Service.Item
@@ -9,9 +10,14 @@ namespace ACT_FFXIV_Aetherbridge.Test.Service.Item
         [SetUp]
         public void TestInitialize()
         {
-            const string itemsStr = "10wind crystalwind crystalsWind CrystalTrueFalse";
-            IGameDataRepository<FFXIV.CrescentCove.Item> itemRepository = new GameDataRepository<FFXIV.CrescentCove.Item>(itemsStr);
-            _itemService = new ItemService(itemRepository);
+            var aetherbridge = AetherbridgeMock.GetInstance();
+            var language = new Language(1, "English");
+            var gameDataManager = new GameDataManager();
+            var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
+            var languageService = new LanguageService(aetherbridge, languageRepository);
+            IGameDataRepository<FFXIV.CrescentCove.Item> itemRepository = new GameDataRepository<FFXIV.CrescentCove.Item>(gameDataManager.Item);
+            _itemService = new ItemService(languageService, itemRepository);
+            _itemService.AddLanguage(language);
         }
 
         private ItemService _itemService;
@@ -27,13 +33,13 @@ namespace ACT_FFXIV_Aetherbridge.Test.Service.Item
         public void GetCommonItemNames_CallTwice_ReturnsItemName()
         {
             _itemService.GetCommonItemNames();
-            Assert.AreEqual("Wind Crystal", _itemService.GetCommonItemNames()[0]);
+            Assert.AreEqual("Luminous Water Crystal", _itemService.GetCommonItemNames()[0]);
         }
 
         [Test]
         public void GetCommonItemNames_ReturnsItemName()
         {
-            Assert.AreEqual("Wind Crystal", _itemService.GetCommonItemNames()[0]);
+            Assert.AreEqual("Luminous Water Crystal", _itemService.GetCommonItemNames()[0]);
         }
 
         [Test]
@@ -54,27 +60,27 @@ namespace ACT_FFXIV_Aetherbridge.Test.Service.Item
         public void GetItemByPluralName_ReturnsItem()
         {
             Assert.AreEqual(typeof(ACT_FFXIV_Aetherbridge.Item),
-                _itemService.GetItemByPluralName("wind crystals").GetType());
+                _itemService.GetItemByPluralName("gil").GetType());
         }
 
         [Test]
         public void GetItemBySingularName_ReturnsItem()
         {
             Assert.AreEqual(typeof(ACT_FFXIV_Aetherbridge.Item),
-                _itemService.GetItemBySingularName("wind crystal").GetType());
+                _itemService.GetItemBySingularName("gil").GetType());
         }
 
         [Test]
         public void GetItemNames_CallTwice_ReturnsItemName()
         {
             _itemService.GetItemNames();
-            Assert.AreEqual("Wind Crystal", _itemService.GetItemNames()[0]);
+            Assert.AreEqual("Luminous Water Crystal", _itemService.GetItemNames()[0]);
         }
 
         [Test]
         public void GetItemNames_ReturnsItemName()
         {
-            Assert.AreEqual("Wind Crystal", _itemService.GetItemNames()[0]);
+            Assert.AreEqual("Luminous Water Crystal", _itemService.GetItemNames()[0]);
         }
     }
 }

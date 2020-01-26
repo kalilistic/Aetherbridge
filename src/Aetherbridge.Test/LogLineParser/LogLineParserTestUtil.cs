@@ -4,12 +4,26 @@ namespace ACT_FFXIV_Aetherbridge.Test.LogLineParser
 {
     public class LogLineParserTestUtil
     {
-        internal static LogLineEvent ParseEvent(string logLine)
-        {
-            var actLogLineEvent = new ACTLogLineEvent {LogLine = logLine};
-            var aetherbridge = AetherbridgeMock.GetInstance();
-            var logLineEvent = new ACT_FFXIV_Aetherbridge.LogLineParser(aetherbridge).Parse(actLogLineEvent);
-            return logLineEvent;
-        }
+	    /*
+	    internal static ILogLineParser BuildParser(Language language)
+	    {
+
+		    if (language.Id == 1)
+		    {
+			    var aetherbridge = (AetherbridgeMock)AetherbridgeMock.GetInstance(language);
+			    aetherbridge.CurrentLanguage = language;
+			    return new ENLogLineParser(aetherbridge);
+		    }
+		    else if (language.Id == 3)
+		    {
+			    var aetherbridge = (AetherbridgeMock)AetherbridgeMock.GetInstance(language);
+			    aetherbridge.CurrentLanguage = language;
+			    return new DELogLineParser(aetherbridge);
+		    }
+		    else
+		    {
+			    return null;
+		    }
+	    }*/
     }
 }

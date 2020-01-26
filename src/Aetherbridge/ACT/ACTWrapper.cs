@@ -5,90 +5,90 @@ using static Advanced_Combat_Tracker.ActGlobals;
 
 namespace ACT_FFXIV_Aetherbridge
 {
-    internal sealed class ACTWrapper : IACTWrapper
-    {
-        private static volatile ACTWrapper _actWrapper;
-        private static readonly object Lock = new object();
+	internal sealed class ACTWrapper : IACTWrapper
+	{
+		private static volatile ACTWrapper _actWrapper;
+		private static readonly object Lock = new object();
 
-        private ACTWrapper()
-        {
-            EnableOnLogLineRead();
-        }
+		private ACTWrapper()
+		{
+			EnableOnLogLineRead();
+		}
 
-        internal bool OnLogLineReadEnabled { get; set; }
-        public bool ACTLogLineParserEnabled { get; set; }
-        public event EventHandler<ACTLogLineEvent> ACTLogLineCaptured;
+		internal bool OnLogLineReadEnabled { get; set; }
+		public bool ACTLogLineParserEnabled { get; set; }
+		public event EventHandler<ACTLogLineEvent> ACTLogLineCaptured;
 
-        public dynamic GetACTPlugin(string pluginFileName, string pluginStatus)
-        {
-            var actPluginInstances = oFormActMain.ActPlugins.Where(actPlugin =>
-                    actPlugin.pluginFile.Name.ToUpper().Contains(pluginFileName.ToUpper()) &&
-                    actPlugin.lblPluginStatus.Text.ToUpper().Contains(pluginStatus.ToUpper()))
-                .Select(actPlugin => actPlugin.pluginObj).Cast<dynamic>().ToList();
+		public dynamic GetACTPlugin(string pluginFileName, string pluginStatus)
+		{
+			var actPluginInstances = oFormActMain.ActPlugins.Where(actPlugin =>
+					actPlugin.pluginFile.Name.ToUpper().Contains(pluginFileName.ToUpper()) &&
+					actPlugin.lblPluginStatus.Text.ToUpper().Contains(pluginStatus.ToUpper()))
+				.Select(actPlugin => actPlugin.pluginObj).Cast<dynamic>().ToList();
 
-            switch (actPluginInstances.Count)
-            {
-                case 0:
-                    throw new Exception("Plugin not found: " + pluginFileName);
-                case 1:
-                    return actPluginInstances[0];
-                default:
-                    throw new Exception("Multiple plugins found: " + pluginFileName);
-            }
-        }
+			switch (actPluginInstances.Count)
+			{
+				case 0:
+					throw new Exception("Plugin not found: " + pluginFileName);
+				case 1:
+					return actPluginInstances[0];
+				default:
+					throw new Exception("Multiple plugins found: " + pluginFileName);
+			}
+		}
 
-        public string GetAppDataFolderFullName()
-        {
-            return oFormActMain.AppDataFolder.FullName;
-        }
+		public string GetAppDataFolderFullName()
+		{
+			return oFormActMain.AppDataFolder.FullName;
+		}
 
-        public string GetCharacterName()
-        {
-            return charName;
-        }
+		public string GetCharacterName()
+		{
+			return charName;
+		}
 
-        public void DeInit()
-        {
-            DisableOnLogLineRead();
-        }
+		public void DeInit()
+		{
+			DisableOnLogLineRead();
+		}
 
-        public static IACTWrapper GetInstance()
-        {
-            if (_actWrapper != null) return _actWrapper;
+		public static IACTWrapper GetInstance()
+		{
+			if (_actWrapper != null) return _actWrapper;
 
-            lock (Lock)
-            {
-                if (_actWrapper == null) _actWrapper = new ACTWrapper();
-            }
+			lock (Lock)
+			{
+				if (_actWrapper == null) _actWrapper = new ACTWrapper();
+			}
 
-            return _actWrapper;
-        }
+			return _actWrapper;
+		}
 
-        public void EnableOnLogLineRead()
-        {
-            if (ACTLogLineParserEnabled) return;
-            ACTLogLineParserEnabled = true;
-            oFormActMain.OnLogLineRead += OnLogLineRead;
-        }
+		public void EnableOnLogLineRead()
+		{
+			if (ACTLogLineParserEnabled) return;
+			ACTLogLineParserEnabled = true;
+			oFormActMain.OnLogLineRead += OnLogLineRead;
+		}
 
-        public void DisableOnLogLineRead()
-        {
-            if (!ACTLogLineParserEnabled) return;
-            ACTLogLineParserEnabled = false;
-            oFormActMain.OnLogLineRead -= OnLogLineRead;
-        }
+		public void DisableOnLogLineRead()
+		{
+			if (!ACTLogLineParserEnabled) return;
+			ACTLogLineParserEnabled = false;
+			oFormActMain.OnLogLineRead -= OnLogLineRead;
+		}
 
-        internal void OnLogLineRead(bool isImport, LogLineEventArgs logInfo)
-        {
-            var logLineEvent = new ACTLogLineEvent
-            {
-                DetectedTime = logInfo.detectedTime,
-                DetectedZone = logInfo.detectedZone,
-                InCombat = logInfo.inCombat,
-                IsImport = isImport,
-                LogLine = logInfo.logLine
-            };
-            ACTLogLineCaptured?.Invoke(this, logLineEvent);
-        }
-    }
+		internal void OnLogLineRead(bool isImport, LogLineEventArgs logInfo)
+		{
+			var logLineEvent = new ACTLogLineEvent
+			{
+				DetectedTime = logInfo.detectedTime,
+				DetectedZone = logInfo.detectedZone,
+				InCombat = logInfo.inCombat,
+				IsImport = isImport,
+				LogLine = logInfo.logLine
+			};
+			ACTLogLineCaptured?.Invoke(this, logLineEvent);
+		}
+	}
 }
