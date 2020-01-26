@@ -1,24 +1,41 @@
-﻿using FFXIV.CrescentCove;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FFXIV.CrescentCove;
 
 namespace ACT_FFXIV_Aetherbridge
 {
-    public class ClassJobService : IClassJobService
-    {
-        private IGameDataRepository<FFXIV.CrescentCove.ClassJob> _repository;
+	public class ClassJobService : IClassJobService
+	{
+		private readonly ILanguageService _languageService;
+		private readonly IGameDataRepository<FFXIV.CrescentCove.ClassJob> _repository;
+		private List<List<ClassJob>> _classJobs = new List<List<ClassJob>>();
 
-        public ClassJobService(IGameDataRepository<FFXIV.CrescentCove.ClassJob> repository)
-        {
-            _repository = repository;
-        }
+		public ClassJobService(ILanguageService languageService,
+			IGameDataRepository<FFXIV.CrescentCove.ClassJob> repository)
+		{
+			_languageService = languageService;
+			_repository = repository;
 
-        public ClassJob GetClassJobById(int id)
-        {
-            return ClassJobMapper.MapToClassJob(_repository.GetById(id));
-        }
+			var languages = _languageService.GetLanguages();
+			foreach (var _ in languages) _classJobs.Add(new List<ClassJob>());
+		}
 
-        public void DeInit()
-        {
-            _repository = null;
-        }
-    }
+		public void AddLanguage(ILanguage language)
+		{
+			var crescentClassJobs = _repository.GetAll();
+			foreach (var crescentClassJob in crescentClassJobs)
+				_classJobs[language.Index].Add(ClassJobMapper.MapToClassJob(crescentClassJob, language));
+		}
+
+		public ClassJob GetClassJobById(int id)
+		{
+			var languageIndex = _languageService.GetCurrentLanguage().Index;
+			return _classJobs[languageIndex].FirstOrDefault(classJob => classJob.Id == id);
+		}
+
+		public void DeInit()
+		{
+			_classJobs = null;
+		}
+	}
 }

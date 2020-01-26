@@ -1,4 +1,5 @@
-﻿using FFXIV.CrescentCove;
+﻿using ACT_FFXIV_Aetherbridge.Test.Mock;
+using FFXIV.CrescentCove;
 using NUnit.Framework;
 
 // ReSharper disable IsExpressionAlwaysTrue
@@ -11,8 +12,13 @@ namespace ACT_FFXIV_Aetherbridge.Test.Service.Location
         [SetUp]
         public void TestInitialize()
         {
+            var aetherbridge = AetherbridgeMock.GetInstance();
+            var language = new Language(1, "English");
             var gameDataManager = new GameDataManager();
-            _locationService = new LocationService(gameDataManager);
+            var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
+            var languageService = new LanguageService(aetherbridge, languageRepository);
+            _locationService = new LocationService(languageService, gameDataManager);
+            _locationService.AddLanguage(language);
         }
 
         private ILocationService _locationService;

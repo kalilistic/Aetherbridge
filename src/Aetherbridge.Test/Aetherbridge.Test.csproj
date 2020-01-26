@@ -38,6 +38,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Advanced Combat Tracker, Version=3.4.5.265, Culture=neutral, PublicKeyToken=a946b61e93d97868, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Advanced Combat Tracker.exe</HintPath>
+    </Reference>
+    <Reference Include="CrescentCove, Version=0.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\CrescentCove\src\CrescentCove\bin\Release\CrescentCove.dll</HintPath>
+    </Reference>
     <Reference Include="FFXIV_ACT_Plugin.Common, Version=2.0.2.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\FFXIV_ACT_Plugin.Common.dll</HintPath>
@@ -46,8 +54,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LogLineParser\LogLineParser.LootEvent.Test.cs" />
-    <Compile Include="LogLineParser\LogLineParser.LogLine.Test.cs" />
+    <Compile Include="LogLineParser\JALogLineParserTest.cs" />
+    <Compile Include="LogLineParser\FRLogLineParserTest.cs" />
+    <Compile Include="LogLineParser\DELogLineParserTest.cs" />
+    <Compile Include="LogLineParser\ENLogLineParserTest.cs" />
+    <Compile Include="LogLineParser\LogLineParserBaseTest.cs" />
     <Compile Include="LogLineParser\LogLineParserTestUtil.cs" />
     <Compile Include="Mock\ACTPluginMock.cs" />
     <Compile Include="Mock\ACTWrapperMock.cs" />
@@ -68,17 +79,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CrescentCove">
-      <Version>0.1.3</Version>
-    </PackageReference>
-    <PackageReference Include="MSTest.TestAdapter">
-      <Version>1.3.2</Version>
-    </PackageReference>
     <PackageReference Include="NUnit">
       <Version>3.12.0</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

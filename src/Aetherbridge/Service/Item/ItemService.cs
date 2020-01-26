@@ -1,90 +1,106 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using FFXIV.CrescentCove;
 
 // ReSharper disable InvertIf
-
 namespace ACT_FFXIV_Aetherbridge
 {
-    public class ItemService : IItemService
-    {
-        private List<string> _commonItemNames;
-        private List<string> _itemNames;
-        private IGameDataRepository<FFXIV.CrescentCove.Item> _repository;
+	public class ItemService : IItemService
+	{
+		private readonly ILanguageService _languageService;
+		private readonly IGameDataRepository<FFXIV.CrescentCove.Item> _repository;
+		private List<List<string>> _commonItemNames = new List<List<string>>();
+		private List<List<string>> _itemNames = new List<List<string>>();
+		private List<List<Item>> _items = new List<List<Item>>();
 
-        public ItemService(IGameDataRepository<FFXIV.CrescentCove.Item> repository)
-        {
-            _repository = repository;
-        }
+		public ItemService(ILanguageService languageService, IGameDataRepository<FFXIV.CrescentCove.Item> repository)
+		{
+			_languageService = languageService;
+			_repository = repository;
 
-        public Item GetItemById(int id)
-        {
-            return ItemMapper.MapToItem(_repository.GetById(id));
-        }
+			var languages = _languageService.GetLanguages();
+			foreach (var _ in languages)
+			{
+				_commonItemNames.Add(new List<string>());
+				_itemNames.Add(new List<string>());
+				_items.Add(new List<Item>());
+			}
+		}
 
-        public Item GetItemBySingularName(string singularName)
-        {
-            var itemNameWithoutPrefix = RemovePrefix(singularName);
-            Expression<Func<FFXIV.CrescentCove.Item, bool>> query = item => item.SingularName.Equals(singularName);
-            var crescentCoveItem = _repository.Find(query).FirstOrDefault();
-            if (crescentCoveItem == null && !singularName.Equals(itemNameWithoutPrefix))
-            {
-                query = item => item.SingularName.Equals(itemNameWithoutPrefix);
-                crescentCoveItem = _repository.Find(query).FirstOrDefault();
-            }
+		public void AddLanguage(ILanguage language)
+		{
+			var crescentItems = _repository.GetAll();
+			foreach (var crescentItem in crescentItems)
+			{
+				var item = ItemMapper.MapToItem(crescentItem, language);
+				_items[language.Index].Add(item);
+				_itemNames[language.Index].Add(item.ProperName);
+				if (item.IsCommon) _commonItemNames[language.Index].Add(item.ProperName);
+			}
+		}
 
-            return crescentCoveItem == null
-                ? new Item {SingularName = itemNameWithoutPrefix}
-                : ItemMapper.MapToItem(crescentCoveItem);
-        }
+		public Item GetItemById(int id)
+		{
+			return _items[_languageService.GetCurrentLanguage().Index].FirstOrDefault(item => item.Id == id);
+		}
 
-        public Item GetItemByPluralName(string pluralName)
-        {
-            var itemNameWithoutPrefix = RemovePrefix(pluralName);
-            Expression<Func<FFXIV.CrescentCove.Item, bool>> query = item => item.PluralName.Equals(pluralName);
-            var crescentCoveItem = _repository.Find(query).FirstOrDefault();
-            if (crescentCoveItem == null && !pluralName.Equals(itemNameWithoutPrefix))
-            {
-                query = item => item.PluralName.Equals(itemNameWithoutPrefix);
-                crescentCoveItem = _repository.Find(query).FirstOrDefault();
-            }
+		public Item GetItemBySingularName(string singularName)
+		{
+			var languageIndex = _languageService.GetCurrentLanguage().Index;
+			var item = _items[languageIndex].FirstOrDefault(i => i.SingularName.Equals(singularName));
+			return item;
+		}
 
-            return crescentCoveItem == null
-                ? new Item {PluralName = itemNameWithoutPrefix}
-                : ItemMapper.MapToItem(crescentCoveItem);
-        }
+		public Item GetItemByPluralName(string pluralName)
+		{
+			var languageIndex = _languageService.GetCurrentLanguage().Index;
+			var item = _items[languageIndex].FirstOrDefault(i => i.PluralName.Equals(pluralName));
+			return item;
+		}
 
-        public List<string> GetItemNames()
-        {
-            if (_itemNames != null) return _itemNames;
-            var items = _repository.GetAll().ToList();
-            _itemNames = items.Select(str => str.ProperName).OrderBy(x => x).ToList();
-            return _itemNames;
-        }
+		public Item GetItemBySingularKeyword(string singularName)
+		{
+			var languageIndex = _languageService.GetCurrentLanguage().Index;
+			var item = _items[languageIndex].FirstOrDefault(i => i.SingularNameKeyword.Equals(singularName));
+			return item;
+		}
 
-        public List<string> GetCommonItemNames()
-        {
-            if (_commonItemNames != null) return _commonItemNames;
-            Expression<Func<FFXIV.CrescentCove.Item, bool>> query = item => item.IsCommon && !item.IsRetired;
-            var items = _repository.Find(query);
-            _commonItemNames = items.Select(str => str.ProperName).OrderBy(x => x).ToList();
-            return _commonItemNames;
-        }
+		public Item GetItemByPluralKeyword(string pluralName)
+		{
+			var languageIndex = _languageService.GetCurrentLanguage().Index;
+			var item = _items[languageIndex].FirstOrDefault(i => i.PluralNameKeyword.Equals(pluralName));
+			return item;
+		}
 
-        public void DeInit()
-        {
-            _repository = null;
-            _commonItemNames = null;
-            _itemNames = null;
-        }
+		public Item GetItemBySingularRegex(string singularName)
+		{
+			var languageIndex = _languageService.GetCurrentLanguage().Index;
+			var item = _items[languageIndex].FirstOrDefault(i => i.SingularNameRegex.Match(singularName).Success);
+			return item;
+		}
 
-        private static string RemovePrefix(string text)
-        {
-            if (text.Length >= 3 && text.Substring(0, 3).ToLower().Equals("an ")) return text.Remove(0, 3);
-            if (text.Length >= 2 && text.Substring(0, 2).ToLower().Equals("a ")) return text.Remove(0, 2);
-            return text.Length >= 4 && text.Substring(0, 4).ToLower().Equals("the ") ? text.Remove(0, 4) : text;
-        }
-    }
+		public Item GetItemByPluralRegex(string pluralName)
+		{
+			var languageIndex = _languageService.GetCurrentLanguage().Index;
+			var item = _items[languageIndex].FirstOrDefault(i => i.PluralNameRegex.Match(pluralName).Success);
+			return item;
+		}
+
+		public List<string> GetItemNames()
+		{
+			return _itemNames[_languageService.GetCurrentLanguage().Index];
+		}
+
+		public List<string> GetCommonItemNames()
+		{
+			return _commonItemNames[_languageService.GetCurrentLanguage().Index];
+		}
+
+		public void DeInit()
+		{
+			_items = null;
+			_commonItemNames = null;
+			_itemNames = null;
+		}
+	}
 }

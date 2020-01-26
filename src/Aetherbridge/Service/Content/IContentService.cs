@@ -2,13 +2,14 @@
 
 namespace ACT_FFXIV_Aetherbridge
 {
-    public interface IContentService
-    {
-        List<IContent> GetHighEndContent();
-        List<IContent> GetContent();
-        IContent GetContentByTerritoryTypeId(int territoryTypeId);
-        List<string> GetContentNames();
-        List<string> GetHighEndContentNames();
-        void DeInit();
-    }
+	public interface IContentService
+	{
+		List<IContent> GetHighEndContent();
+		List<IContent> GetContent();
+		IContent GetContentByTerritoryTypeId(int territoryTypeId);
+		List<string> GetContentNames();
+		List<string> GetHighEndContentNames();
+		void DeInit();
+		void AddLanguage(ILanguage language);
+	}
 }
