@@ -10,9 +10,9 @@ namespace ACT_FFXIV_Aetherbridge
 		ContentService ContentService { get; }
 		ItemService ItemService { get; }
 		LanguageService LanguageService { get; set; }
+		PlayerService PlayerService { get; set; }
 		AetherbridgeConfig AetherbridgeConfig { get; set; }
 		event EventHandler<LogLineEvent> LogLineCaptured;
-		Player GetCurrentPlayer();
 		Language GetCurrentLanguage();
 		void InitGameData();
 		void Initialize();

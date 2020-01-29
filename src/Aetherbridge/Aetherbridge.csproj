@@ -58,7 +58,6 @@
     <Compile Include="Model\AetherbridgeConfig.cs" />
     <Compile Include="Model\Content.cs" />
     <Compile Include="Model\DraftItem.cs" />
-    <Compile Include="Model\PlayerMapper.cs" />
     <Compile Include="Model\Item.cs" />
     <Compile Include="Model\Location.cs" />
     <Compile Include="Model\PlaceName.cs" />
@@ -87,6 +86,7 @@
     <Compile Include="Service\ItemService.cs" />
     <Compile Include="Service\ContentService.cs" />
     <Compile Include="Service\LanguageService.cs" />
+    <Compile Include="Service\PlayerService.cs" />
     <Compile Include="Service\LocationService.cs" />
     <Compile Include="Service\WorldService.cs" />
   </ItemGroup>

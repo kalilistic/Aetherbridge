@@ -166,7 +166,7 @@ namespace ACT_FFXIV_Aetherbridge
 		protected virtual Player CreateActor(Match actorMatch)
 		{
 			var actorName = actorMatch.Groups["ActorNameWithWorldName"].Value;
-			var currentPlayer = Aetherbridge.GetCurrentPlayer();
+			var currentPlayer = Aetherbridge.PlayerService.GetCurrentPlayer();
 
 			if (actorName.Equals(string.Empty))
 			{

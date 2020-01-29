@@ -11,7 +11,6 @@ namespace ACT_FFXIV_Aetherbridge.Test.Mock
 		private static IACTWrapper _actWrapper;
 		private static IFFXIVACTPluginWrapper _ffxivACTPluginWrapper;
 		internal readonly ILogLineParser LogLineParser;
-		public PlayerMapper PlayerMapper;
 
 		private AetherbridgeMock(Language language)
 		{
@@ -32,8 +31,8 @@ namespace ACT_FFXIV_Aetherbridge.Test.Mock
 				new ContentService(LanguageService, _ffxivACTPluginWrapper.GetZoneList(), contentRepository);
 			var itemRepository = new GameDataRepository<FFXIV.CrescentCove.Item>(gameDataManager.Item);
 			ItemService = new ItemService(LanguageService, itemRepository);
+			PlayerService = new PlayerService(_actWrapper, _ffxivACTPluginWrapper, WorldService, ClassJobService);
 			LogLineParser = new ENLogLineParser(this);
-			PlayerMapper = new PlayerMapper(WorldService, ClassJobService);
 		}
 
 		public Language CurrentLanguage { get; set; }
@@ -45,11 +44,12 @@ namespace ACT_FFXIV_Aetherbridge.Test.Mock
 		public ContentService ContentService { get; set; }
 		public ItemService ItemService { get; }
 		public LanguageService LanguageService { get; set; }
+		public PlayerService PlayerService { get; set; }
 		public AetherbridgeConfig AetherbridgeConfig { get; set; }
 
 		public Player GetCurrentPlayer()
 		{
-			var player = PlayerMapper.MapToPlayer(_ffxivACTPluginWrapper.GetCurrentCombatant());
+			var player = PlayerService.MapToPlayer(_ffxivACTPluginWrapper.GetCurrentCombatant());
 			player.IsReporter = true;
 			return player;
 		}

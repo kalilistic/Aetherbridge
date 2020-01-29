@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using FFXIV.CrescentCove;
 
 namespace ACT_FFXIV_Aetherbridge
@@ -10,7 +9,6 @@ namespace ACT_FFXIV_Aetherbridge
 		private static readonly object Lock = new object();
 		private static IACTWrapper _actWrapper;
 		private static IFFXIVACTPluginWrapper _ffxivACTPluginWrapper;
-		private static PlayerMapper _playerMapper;
 		internal ILogLineParser LogLineParser;
 
 		private Aetherbridge()
@@ -26,6 +24,7 @@ namespace ACT_FFXIV_Aetherbridge
 		public ContentService ContentService { get; set; }
 		public ItemService ItemService { get; set; }
 		public LanguageService LanguageService { get; set; }
+		public PlayerService PlayerService { get; set; }
 		public AetherbridgeConfig AetherbridgeConfig { get; set; }
 
 		public void AddLanguage(Language language)
@@ -38,25 +37,6 @@ namespace ACT_FFXIV_Aetherbridge
 
 		public event EventHandler<LogLineEvent> LogLineCaptured;
 
-		public Player GetCurrentPlayer()
-		{
-			var combatant = _ffxivACTPluginWrapper.GetCurrentCombatant();
-			Player player;
-			if (combatant == null)
-			{
-				var importName = ACTWrapper.GetInstance().GetCharacterName();
-				player = importName.Equals(string.Empty) || !importName.Contains(" ")
-					? new Player {Name = "Your Character"}
-					: new Player {Name = ACTWrapper.GetInstance().GetCharacterName()};
-			}
-			else
-			{
-				player = _playerMapper.MapToPlayer(combatant);
-			}
-
-			player.IsReporter = true;
-			return player;
-		}
 
 		public void InitGameData()
 		{
@@ -74,7 +54,7 @@ namespace ACT_FFXIV_Aetherbridge
 				new ContentService(LanguageService, _ffxivACTPluginWrapper.GetZoneList(), contentRepository);
 			var itemRepository = new GameDataRepository<FFXIV.CrescentCove.Item>(gameDataManager.Item);
 			ItemService = new ItemService(LanguageService, itemRepository);
-			_playerMapper = new PlayerMapper(WorldService, ClassJobService);
+			PlayerService = new PlayerService(_actWrapper, _ffxivACTPluginWrapper, WorldService, ClassJobService);
 			AddLanguage(GetCurrentLanguage());
 		}
 
@@ -134,34 +114,6 @@ namespace ACT_FFXIV_Aetherbridge
 			if (!actLogLineEvent.IsImport && logLineEvent?.XIVEvent != null)
 				logLineEvent.XIVEvent.Location = GetCurrentLocation();
 			LogLineCaptured?.Invoke(this, logLineEvent);
-		}
-
-		public Player GetCurrentPlayerACT()
-		{
-			return new Player {Name = _actWrapper.GetCharacterName(), IsReporter = true};
-		}
-
-		public List<Player> GetPartyMembers()
-		{
-			return _playerMapper.MapToPlayers(_ffxivACTPluginWrapper.GetPartyCombatants());
-		}
-
-		public List<Player> GetAllianceMembers()
-		{
-			return _playerMapper.MapToPlayers(_ffxivACTPluginWrapper.GetAllianceCombatants());
-		}
-
-		public Player GetPlayerByName(string name)
-		{
-			try
-			{
-				var combatant = _ffxivACTPluginWrapper.GetCombatantByName(name);
-				return _playerMapper.MapToPlayer(combatant);
-			}
-			catch (Exception)
-			{
-				return new Player {Name = ACTWrapper.GetInstance().GetCharacterName()};
-			}
 		}
 
 		public void DeInit()
