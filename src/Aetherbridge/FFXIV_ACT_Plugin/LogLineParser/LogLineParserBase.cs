@@ -26,7 +26,7 @@ namespace ACT_FFXIV_Aetherbridge
 		internal IAetherbridge Aetherbridge;
 		internal string HQChar;
 		internal string HQString;
-		protected ILogLineEvent LogLineEvent;
+		protected LogLineEvent LogLineEvent;
 		internal string WorldsList;
 
 		protected LogLineParserBase(IAetherbridge aetherbridge)
@@ -45,7 +45,7 @@ namespace ACT_FFXIV_Aetherbridge
 			return new Regex(pattern, RegexOptions.Compiled);
 		}
 
-		public void Parse(IACTLogLineEvent actLogLineEvent)
+		public void Parse(ACTLogLineEvent actLogLineEvent)
 		{
 			LogLineEvent = new LogLineEvent {ACTLogLineEvent = actLogLineEvent};
 			LogLineEvent.LogMessage = LogLineEvent.ACTLogLineEvent.LogLine;
@@ -123,7 +123,7 @@ namespace ACT_FFXIV_Aetherbridge
 				LogLineEvent.LogMessage = LogLineEvent.LogMessage.Replace("  ", " ");
 		}
 
-		protected void ParseRawItemName(Match match, IDraftItem draftItem)
+		protected void ParseRawItemName(Match match, DraftItem draftItem)
 		{
 			var rawItemName = match.Groups["RawItemName"].Value;
 			rawItemName = rawItemName.Replace(" " + HQChar, string.Empty);
@@ -131,7 +131,7 @@ namespace ACT_FFXIV_Aetherbridge
 			draftItem.RawItemName = rawItemName;
 		}
 
-		protected virtual void ParseItemNameAndQuantity(IDraftItem draftItem)
+		protected virtual void ParseItemNameAndQuantity(DraftItem draftItem)
 		{
 			var match = ItemNameRegex.Match(draftItem.RawItemName);
 			draftItem.ItemName = match.Groups["ItemName"].Value.Trim();
@@ -146,7 +146,7 @@ namespace ACT_FFXIV_Aetherbridge
 			}
 		}
 
-		protected Item CreateItemFromDraft(IDraftItem draftItem)
+		protected Item CreateItemFromDraft(DraftItem draftItem)
 		{
 			var item = FindItem(draftItem.ItemName, draftItem.Quantity);
 			if (item == null) return null;
@@ -166,7 +166,7 @@ namespace ACT_FFXIV_Aetherbridge
 		protected virtual Player CreateActor(Match actorMatch)
 		{
 			var actorName = actorMatch.Groups["ActorNameWithWorldName"].Value;
-			var currentPlayer = (Player) Aetherbridge.GetCurrentPlayer();
+			var currentPlayer = Aetherbridge.GetCurrentPlayer();
 
 			if (actorName.Equals(string.Empty))
 			{

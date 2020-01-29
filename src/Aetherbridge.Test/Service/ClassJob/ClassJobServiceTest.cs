@@ -4,44 +4,44 @@ using NUnit.Framework;
 
 namespace ACT_FFXIV_Aetherbridge.Test.Service.ClassJob
 {
-    [TestFixture]
-    public class ClassJobServiceTest
-    {
-        [SetUp]
-        public void TestInitialize()
-        {
-            var aetherbridge = (AetherbridgeMock) AetherbridgeMock.GetInstance();
-            var language = new Language(1, "English");
-            aetherbridge.CurrentLanguage = language;
-            var gameDataManager = new GameDataManager();
-            var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
-            var languageService = new LanguageService(aetherbridge, languageRepository);
-            IGameDataRepository<FFXIV.CrescentCove.ClassJob> classJobRepository =
-                new GameDataRepository<FFXIV.CrescentCove.ClassJob>(gameDataManager.ClassJob);
-            _classJobService = new ClassJobService(languageService, classJobRepository);
-            _classJobService.AddLanguage(language);
-        }
+	[TestFixture]
+	public class ClassJobServiceTest
+	{
+		[SetUp]
+		public void TestInitialize()
+		{
+			var aetherbridge = (AetherbridgeMock) AetherbridgeMock.GetInstance();
+			var language = new Language(1, "English");
+			aetherbridge.CurrentLanguage = language;
+			var gameDataManager = new GameDataManager();
+			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
+			var languageService = new LanguageService(aetherbridge, languageRepository);
+			IGameDataRepository<FFXIV.CrescentCove.ClassJob> classJobRepository =
+				new GameDataRepository<FFXIV.CrescentCove.ClassJob>(gameDataManager.ClassJob);
+			_classJobService = new ClassJobService(languageService, classJobRepository);
+			_classJobService.AddLanguage(language);
+		}
 
-        private ClassJobService _classJobService;
+		private ClassJobService _classJobService;
 
-        [Test]
-        public void DeInit_SetsNull()
-        {
-            _classJobService.DeInit();
-        }
+		[Test]
+		public void DeInit_SetsNull()
+		{
+			_classJobService.DeInit();
+		}
 
-        [Test]
-        public void GetClassJobByID_BadID_ReturnsNull()
-        {
-            var classJob = _classJobService.GetClassJobById(-1);
-            Assert.IsNull(classJob);
-        }
+		[Test]
+		public void GetClassJobByID_BadID_ReturnsNull()
+		{
+			var classJob = _classJobService.GetClassJobById(-1);
+			Assert.IsNull(classJob);
+		}
 
-        [Test]
-        public void GetClassJobByID_ReturnsClassJob()
-        {
-            var classJob = _classJobService.GetClassJobById(2);
-            Assert.AreEqual("PGL", classJob.Abbreviation);
-        }
-    }
+		[Test]
+		public void GetClassJobByID_ReturnsClassJob()
+		{
+			var classJob = _classJobService.GetClassJobById(2);
+			Assert.AreEqual("PGL", classJob.Abbreviation);
+		}
+	}
 }

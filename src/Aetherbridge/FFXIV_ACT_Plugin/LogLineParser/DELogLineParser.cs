@@ -28,7 +28,7 @@ namespace ACT_FFXIV_Aetherbridge
 			NumberDelimiterLocalized = ".";
 		}
 
-		public new ILogLineEvent Parse(IACTLogLineEvent actLogLineEvent)
+		public new LogLineEvent Parse(ACTLogLineEvent actLogLineEvent)
 		{
 			base.Parse(actLogLineEvent);
 			return LogLineEvent;

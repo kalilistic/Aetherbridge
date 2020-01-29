@@ -28,7 +28,7 @@ namespace ACT_FFXIV_Aetherbridge
 			_numberDelimiterLocalizedChar = NumberDelimiterLocalized.ToCharArray()[0];
 		}
 
-		public new ILogLineEvent Parse(IACTLogLineEvent actLogLineEvent)
+		public new LogLineEvent Parse(ACTLogLineEvent actLogLineEvent)
 		{
 			base.Parse(actLogLineEvent);
 			return LogLineEvent;
@@ -37,6 +37,20 @@ namespace ACT_FFXIV_Aetherbridge
 		public override Item FindItem(string itemName, int quantity)
 		{
 			return Aetherbridge.ItemService.GetItemBySingularName(itemName);
+		}
+
+		public override void NormalizeObtainWithMostRare()
+		{
+			NormalizeObtainCommon();
+		}
+
+		public override void NormalizeObtain()
+		{
+			NormalizeObtainCommon();
+		}
+
+		public override void NormalizeRoll()
+		{
 		}
 
 		protected override bool IsObtainLoot()
@@ -63,7 +77,7 @@ namespace ACT_FFXIV_Aetherbridge
 			return match.Success;
 		}
 
-		protected override void ParseItemNameAndQuantity(IDraftItem draftItem)
+		protected override void ParseItemNameAndQuantity(DraftItem draftItem)
 		{
 			var match = _itemQuantityRegex.Match(draftItem.RawItemName);
 			var quantityStr = match.Groups["Quantity"].Value.Replace(NumberDelimiterLocalized, string.Empty);
@@ -81,16 +95,6 @@ namespace ACT_FFXIV_Aetherbridge
 			}
 		}
 
-		public override void NormalizeObtainWithMostRare()
-		{
-			NormalizeObtainCommon();
-		}
-
-		public override void NormalizeObtain()
-		{
-			NormalizeObtainCommon();
-		}
-
 		private void NormalizeObtainCommon()
 		{
 			if (LogLineEvent.XIVEvent.Item == null) return;
@@ -100,10 +104,6 @@ namespace ACT_FFXIV_Aetherbridge
 			if (LogLineEvent.XIVEvent.Item.Quantity > 1) itemName += "×" + $"{LogLineEvent.XIVEvent.Item.Quantity:n0}";
 			LogLineEvent.LogMessage =
 				LogLineEvent.XIVEvent.Actor.Name + "は" + itemName + "を手に入れた。";
-		}
-
-		public override void NormalizeRoll()
-		{
 		}
 	}
 }

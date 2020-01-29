@@ -2,7 +2,7 @@
 {
 	internal interface ILogLineParser
 	{
-		ILogLineEvent Parse(IACTLogLineEvent actLogLineEvent);
+		LogLineEvent Parse(ACTLogLineEvent actLogLineEvent);
 		Item FindItem(string itemName, int quantity);
 		void NormalizeObtainWithMostRare();
 		void NormalizeObtain();

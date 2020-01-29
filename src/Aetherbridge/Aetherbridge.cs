@@ -20,35 +20,15 @@ namespace ACT_FFXIV_Aetherbridge
 			AetherbridgeConfig = new AetherbridgeConfig();
 		}
 
-		public IClassJobService ClassJobService { get; set; }
-		public IWorldService WorldService { get; set; }
-		public ILocationService LocationService { get; set; }
-		public IContentService ContentService { get; set; }
-		public IItemService ItemService { get; set; }
-		public ILanguageService LanguageService { get; set; }
-		public IAetherbridgeConfig AetherbridgeConfig { get; set; }
+		public ClassJobService ClassJobService { get; set; }
+		public WorldService WorldService { get; set; }
+		public LocationService LocationService { get; set; }
+		public ContentService ContentService { get; set; }
+		public ItemService ItemService { get; set; }
+		public LanguageService LanguageService { get; set; }
+		public AetherbridgeConfig AetherbridgeConfig { get; set; }
 
-		public void InitLogLineParser()
-		{
-			var lang = GetCurrentLanguage();
-			switch (lang.Id)
-			{
-				case 1:
-					LogLineParser = new ENLogLineParser(this);
-					break;
-				case 2:
-					LogLineParser = new FRLogLineParser(this);
-					break;
-				case 3:
-					LogLineParser = new DELogLineParser(this);
-					break;
-				case 4:
-					LogLineParser = new JALogLineParser(this);
-					break;
-			}
-		}
-
-		public void AddLanguage(ILanguage language)
+		public void AddLanguage(Language language)
 		{
 			ClassJobService.AddLanguage(language);
 			LocationService.AddLanguage(language);
@@ -56,42 +36,12 @@ namespace ACT_FFXIV_Aetherbridge
 			ItemService.AddLanguage(language);
 		}
 
-		public event EventHandler<ILogLineEvent> LogLineCaptured;
+		public event EventHandler<LogLineEvent> LogLineCaptured;
 
-		public void EnableLogLineParser()
-		{
-			if (AetherbridgeConfig.LogLineParserEnabled) return;
-			if (LogLineParser == null) InitLogLineParser();
-			AetherbridgeConfig.LogLineParserEnabled = true;
-			_actWrapper.ACTLogLineParserEnabled = true;
-			_actWrapper.ACTLogLineCaptured += ACTLogLineCaptured;
-		}
-
-		public void DisableLogLineParser()
-		{
-			if (!AetherbridgeConfig.LogLineParserEnabled) return;
-			AetherbridgeConfig.LogLineParserEnabled = false;
-			_actWrapper.ACTLogLineParserEnabled = false;
-			_actWrapper.ACTLogLineCaptured -= ACTLogLineCaptured;
-		}
-
-		public void ACTLogLineCaptured(object sender, ACTLogLineEvent actLogLineEvent)
-		{
-			var logLineEvent = LogLineParser.Parse(actLogLineEvent);
-			if (!actLogLineEvent.IsImport && logLineEvent?.XIVEvent != null)
-				logLineEvent.XIVEvent.Location = GetCurrentLocation();
-			LogLineCaptured?.Invoke(this, logLineEvent);
-		}
-
-		public IPlayer GetCurrentPlayerACT()
-		{
-			return new Player {Name = _actWrapper.GetCharacterName(), IsReporter = true};
-		}
-
-		public IPlayer GetCurrentPlayer()
+		public Player GetCurrentPlayer()
 		{
 			var combatant = _ffxivACTPluginWrapper.GetCurrentCombatant();
-			IPlayer player;
+			Player player;
 			if (combatant == null)
 			{
 				var importName = ACTWrapper.GetInstance().GetCharacterName();
@@ -106,41 +56,6 @@ namespace ACT_FFXIV_Aetherbridge
 
 			player.IsReporter = true;
 			return player;
-		}
-
-		public List<IPlayer> GetPartyMembers()
-		{
-			return _playerMapper.MapToPlayers(_ffxivACTPluginWrapper.GetPartyCombatants());
-		}
-
-		public List<IPlayer> GetAllianceMembers()
-		{
-			return _playerMapper.MapToPlayers(_ffxivACTPluginWrapper.GetAllianceCombatants());
-		}
-
-		public IPlayer GetPlayerByName(string name)
-		{
-			try
-			{
-				var combatant = _ffxivACTPluginWrapper.GetCombatantByName(name);
-				return _playerMapper.MapToPlayer(combatant);
-			}
-			catch (Exception)
-			{
-				return new Player {Name = ACTWrapper.GetInstance().GetCharacterName()};
-			}
-		}
-
-		public void DeInit()
-		{
-			DisableLogLineParser();
-		}
-
-		private static void InitWrappers()
-		{
-			_actWrapper = ACTWrapper.GetInstance();
-			FFXIVACTPluginWrapper.Initialize(_actWrapper);
-			_ffxivACTPluginWrapper = FFXIVACTPluginWrapper.GetInstance();
 		}
 
 		public void InitGameData()
@@ -169,16 +84,101 @@ namespace ACT_FFXIV_Aetherbridge
 			EnableLogLineParser();
 		}
 
-		public ILocation GetCurrentLocation()
-		{
-			return LocationService.GetLocationById(Convert.ToInt32(_ffxivACTPluginWrapper.GetCurrentTerritoryId()));
-		}
-
-		public ILanguage GetCurrentLanguage()
+		public Language GetCurrentLanguage()
 		{
 			var languageId = (int) _ffxivACTPluginWrapper.GetSelectedLanguage();
 			if (languageId == 0 || languageId > 4) languageId = 1;
 			return LanguageService.GetLanguageById(languageId);
+		}
+
+		public void InitLogLineParser()
+		{
+			var lang = GetCurrentLanguage();
+			switch (lang.Id)
+			{
+				case 1:
+					LogLineParser = new ENLogLineParser(this);
+					break;
+				case 2:
+					LogLineParser = new FRLogLineParser(this);
+					break;
+				case 3:
+					LogLineParser = new DELogLineParser(this);
+					break;
+				case 4:
+					LogLineParser = new JALogLineParser(this);
+					break;
+			}
+		}
+
+		public void EnableLogLineParser()
+		{
+			if (AetherbridgeConfig.LogLineParserEnabled) return;
+			if (LogLineParser == null) InitLogLineParser();
+			AetherbridgeConfig.LogLineParserEnabled = true;
+			_actWrapper.ACTLogLineParserEnabled = true;
+			_actWrapper.ACTLogLineCaptured += ACTLogLineCaptured;
+		}
+
+		public void DisableLogLineParser()
+		{
+			if (!AetherbridgeConfig.LogLineParserEnabled) return;
+			AetherbridgeConfig.LogLineParserEnabled = false;
+			_actWrapper.ACTLogLineParserEnabled = false;
+			_actWrapper.ACTLogLineCaptured -= ACTLogLineCaptured;
+		}
+
+		public void ACTLogLineCaptured(object sender, ACTLogLineEvent actLogLineEvent)
+		{
+			var logLineEvent = LogLineParser.Parse(actLogLineEvent);
+			if (!actLogLineEvent.IsImport && logLineEvent?.XIVEvent != null)
+				logLineEvent.XIVEvent.Location = GetCurrentLocation();
+			LogLineCaptured?.Invoke(this, logLineEvent);
+		}
+
+		public Player GetCurrentPlayerACT()
+		{
+			return new Player {Name = _actWrapper.GetCharacterName(), IsReporter = true};
+		}
+
+		public List<Player> GetPartyMembers()
+		{
+			return _playerMapper.MapToPlayers(_ffxivACTPluginWrapper.GetPartyCombatants());
+		}
+
+		public List<Player> GetAllianceMembers()
+		{
+			return _playerMapper.MapToPlayers(_ffxivACTPluginWrapper.GetAllianceCombatants());
+		}
+
+		public Player GetPlayerByName(string name)
+		{
+			try
+			{
+				var combatant = _ffxivACTPluginWrapper.GetCombatantByName(name);
+				return _playerMapper.MapToPlayer(combatant);
+			}
+			catch (Exception)
+			{
+				return new Player {Name = ACTWrapper.GetInstance().GetCharacterName()};
+			}
+		}
+
+		public void DeInit()
+		{
+			DisableLogLineParser();
+		}
+
+		private static void InitWrappers()
+		{
+			_actWrapper = ACTWrapper.GetInstance();
+			FFXIVACTPluginWrapper.Initialize(_actWrapper);
+			_ffxivACTPluginWrapper = FFXIVACTPluginWrapper.GetInstance();
+		}
+
+		public Location GetCurrentLocation()
+		{
+			return LocationService.GetLocationById(Convert.ToInt32(_ffxivACTPluginWrapper.GetCurrentTerritoryId()));
 		}
 
 		public string GetAppDirectory()
