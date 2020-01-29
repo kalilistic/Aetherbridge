@@ -47,7 +47,7 @@ namespace ACT_FFXIV_Aetherbridge
 			WorldService = new WorldService(worldRepository);
 			var classJobRepository = new GameDataRepository<FFXIV.CrescentCove.ClassJob>(gameDataManager.ClassJob);
 			ClassJobService = new ClassJobService(LanguageService, classJobRepository);
-			LocationService = new LocationService(LanguageService, gameDataManager);
+			LocationService = new LocationService(LanguageService, gameDataManager, _ffxivACTPluginWrapper);
 			var contentRepository =
 				new GameDataRepository<ContentFinderCondition>(gameDataManager.ContentFinderCondition);
 			ContentService =
@@ -105,7 +105,7 @@ namespace ACT_FFXIV_Aetherbridge
 		{
 			var logLineEvent = LogLineParser.Parse(actLogLineEvent);
 			if (!actLogLineEvent.IsImport && logLineEvent?.XIVEvent != null)
-				logLineEvent.XIVEvent.Location = GetCurrentLocation();
+				logLineEvent.XIVEvent.Location = LocationService.GetCurrentLocation();
 			LogLineCaptured?.Invoke(this, logLineEvent);
 		}
 
@@ -119,11 +119,6 @@ namespace ACT_FFXIV_Aetherbridge
 			_actWrapper = ACTWrapper.GetInstance();
 			FFXIVACTPluginWrapper.Initialize(_actWrapper);
 			_ffxivACTPluginWrapper = FFXIVACTPluginWrapper.GetInstance();
-		}
-
-		public Location GetCurrentLocation()
-		{
-			return LocationService.GetLocationById(Convert.ToInt32(_ffxivACTPluginWrapper.GetCurrentTerritoryId()));
 		}
 
 		public string GetAppDirectory()

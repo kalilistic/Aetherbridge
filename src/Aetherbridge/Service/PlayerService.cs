@@ -63,11 +63,6 @@ namespace ACT_FFXIV_Aetherbridge
 			return player;
 		}
 
-		public Player GetCurrentPlayerACT()
-		{
-			return new Player {Name = _actWrapper.GetCharacterName(), IsReporter = true};
-		}
-
 		public List<Player> GetPartyMembers()
 		{
 			return MapToPlayers(_ffxivACTPluginWrapper.GetPartyCombatants());

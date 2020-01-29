@@ -1,10 +1,9 @@
-﻿using ACT_FFXIV_Aetherbridge.Test.Mock;
-using FFXIV.CrescentCove;
+﻿using FFXIV.CrescentCove;
 using NUnit.Framework;
 
 // ReSharper disable IsExpressionAlwaysTrue
 
-namespace ACT_FFXIV_Aetherbridge.Test.Service.Content
+namespace ACT_FFXIV_Aetherbridge.Test
 {
 	[TestFixture]
 	public class ContentServiceTest

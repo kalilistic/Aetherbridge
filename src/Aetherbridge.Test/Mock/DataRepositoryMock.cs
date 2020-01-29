@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using FFXIV_ACT_Plugin.Common.Models;
 
-namespace ACT_FFXIV_Aetherbridge.Test.Mock
+namespace ACT_FFXIV_Aetherbridge.Test
 {
 	// ReSharper disable InconsistentNaming
 	public class DataRepositoryMock

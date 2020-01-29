@@ -1,7 +1,6 @@
-﻿using ACT_FFXIV_Aetherbridge.Test.Mock;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
-namespace ACT_FFXIV_Aetherbridge.Test.LogLineParser
+namespace ACT_FFXIV_Aetherbridge.Test
 {
 	[TestFixture]
 	public class DELogLineParserTest

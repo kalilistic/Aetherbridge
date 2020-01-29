@@ -1,8 +1,7 @@
-﻿using ACT_FFXIV_Aetherbridge.Test.Mock;
-using FFXIV.CrescentCove;
+﻿using FFXIV.CrescentCove;
 using NUnit.Framework;
 
-namespace ACT_FFXIV_Aetherbridge.Test.Service.Item
+namespace ACT_FFXIV_Aetherbridge.Test
 {
 	[TestFixture]
 	public class ItemServiceTest

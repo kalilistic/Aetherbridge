@@ -1,4 +1,4 @@
-﻿namespace ACT_FFXIV_Aetherbridge.Test.LogLineParser
+﻿namespace ACT_FFXIV_Aetherbridge.Test
 {
 	public class LogLineParserTestUtil
 	{

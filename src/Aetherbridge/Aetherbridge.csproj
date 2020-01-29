@@ -65,7 +65,6 @@
     <Compile Include="Model\XIVEventType.cs" />
     <Compile Include="Model\XIVEvent.cs" />
     <Compile Include="Service\ClassJobService.cs" />
-    <Compile Include="Service\ClassJobMapper.cs" />
     <Compile Include="Model\ACTLogLineEvent.cs" />
     <Compile Include="ACT\ACTWrapper.cs" />
     <Compile Include="ACT\IACTWrapper.cs" />

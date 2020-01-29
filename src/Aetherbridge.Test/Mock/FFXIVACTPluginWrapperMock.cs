@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FFXIV_ACT_Plugin.Common.Models;
 
-namespace ACT_FFXIV_Aetherbridge.Test.Mock
+namespace ACT_FFXIV_Aetherbridge.Test
 {
 	public class FFXIVACTPluginWrapperMock : IFFXIVACTPluginWrapper
 	{

@@ -1,7 +1,7 @@
 ﻿using FFXIV.CrescentCove;
 using NUnit.Framework;
 
-namespace ACT_FFXIV_Aetherbridge.Test.Service.World
+namespace ACT_FFXIV_Aetherbridge.Test
 {
 	[TestFixture]
 	public class WorldServiceTest

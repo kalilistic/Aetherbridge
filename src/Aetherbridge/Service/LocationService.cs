@@ -11,15 +11,18 @@ namespace ACT_FFXIV_Aetherbridge
 		private readonly IGameDataRepository<Map> _mapRepository;
 		private readonly IGameDataRepository<FFXIV.CrescentCove.PlaceName> _placeNameRepository;
 		private readonly IGameDataRepository<TerritoryType> _territoryTypeRepository;
+		private readonly IFFXIVACTPluginWrapper _ffxivACTPluginWrapper;
 		private List<List<Location>> _locations = new List<List<Location>>();
 
-		public LocationService(LanguageService languageService, IGameDataManager gameDataManager)
+		public LocationService(LanguageService languageService, IGameDataManager gameDataManager, IFFXIVACTPluginWrapper ffxivACTPluginWrapper)
 		{
 			_languageService = languageService;
 
 			_territoryTypeRepository = new GameDataRepository<TerritoryType>(gameDataManager.TerritoryType);
 			_placeNameRepository = new GameDataRepository<FFXIV.CrescentCove.PlaceName>(gameDataManager.PlaceName);
 			_mapRepository = new GameDataRepository<Map>(gameDataManager.Map);
+
+			_ffxivACTPluginWrapper = ffxivACTPluginWrapper;
 
 			var languages = _languageService.GetLanguages();
 			foreach (var _ in languages) _locations.Add(new List<Location>());
@@ -119,6 +122,11 @@ namespace ACT_FFXIV_Aetherbridge
 		public void DeInit()
 		{
 			_locations = null;
+		}
+
+		public Location GetCurrentLocation()
+		{
+			return GetLocationById(Convert.ToInt32(_ffxivACTPluginWrapper.GetCurrentTerritoryId()));
 		}
 	}
 }

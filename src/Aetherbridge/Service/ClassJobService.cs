@@ -24,7 +24,7 @@ namespace ACT_FFXIV_Aetherbridge
 		{
 			var crescentClassJobs = _repository.GetAll();
 			foreach (var crescentClassJob in crescentClassJobs)
-				_classJobs[language.Index].Add(ClassJobMapper.MapToClassJob(crescentClassJob, language));
+				_classJobs[language.Index].Add(MapToClassJob(crescentClassJob, language));
 		}
 
 		public ClassJob GetClassJobById(int id)
@@ -36,6 +36,22 @@ namespace ACT_FFXIV_Aetherbridge
 		public void DeInit()
 		{
 			_classJobs = null;
+		}
+
+		public static List<ClassJob> MapToClassJobs(List<FFXIV.CrescentCove.ClassJob> classJobs, Language language)
+		{
+			return classJobs.Select<FFXIV.CrescentCove.ClassJob, ClassJob>(classJob => MapToClassJob(classJob, language)).ToList();
+		}
+
+		public static ClassJob MapToClassJob(FFXIV.CrescentCove.ClassJob classJob, Language language)
+		{
+			if (classJob == null) return null;
+			return new ClassJob
+			{
+				Id = classJob.Id,
+				Name = classJob.Localized[language.Index].Name,
+				Abbreviation = classJob.Localized[language.Index].Abbreviation
+			};
 		}
 	}
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using FFXIV.CrescentCove;
 
-namespace ACT_FFXIV_Aetherbridge.Test.Mock
+namespace ACT_FFXIV_Aetherbridge.Test
 {
 	internal class AetherbridgeMock : IAetherbridge
 	{
@@ -24,7 +24,7 @@ namespace ACT_FFXIV_Aetherbridge.Test.Mock
 			WorldService = new WorldService(worldRepository);
 			var classJobRepository = new GameDataRepository<FFXIV.CrescentCove.ClassJob>(gameDataManager.ClassJob);
 			ClassJobService = new ClassJobService(LanguageService, classJobRepository);
-			LocationService = new LocationService(LanguageService, gameDataManager);
+			LocationService = new LocationService(LanguageService, gameDataManager, _ffxivACTPluginWrapper);
 			var contentRepository =
 				new GameDataRepository<ContentFinderCondition>(gameDataManager.ContentFinderCondition);
 			ContentService =
