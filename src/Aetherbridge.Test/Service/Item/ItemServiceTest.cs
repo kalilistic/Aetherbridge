@@ -10,11 +10,10 @@ namespace ACT_FFXIV_Aetherbridge.Test.Service.Item
 		[SetUp]
 		public void TestInitialize()
 		{
-			var aetherbridge = AetherbridgeMock.GetInstance();
 			var language = new Language(1, "English");
 			var gameDataManager = new GameDataManager();
 			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
-			var languageService = new LanguageService(aetherbridge, languageRepository);
+			var languageService = new LanguageService(languageRepository, new FFXIVACTPluginWrapperMock());
 			IGameDataRepository<FFXIV.CrescentCove.Item> itemRepository =
 				new GameDataRepository<FFXIV.CrescentCove.Item>(gameDataManager.Item);
 			_itemService = new ItemService(languageService, itemRepository);

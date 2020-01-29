@@ -17,7 +17,7 @@ namespace ACT_FFXIV_Aetherbridge.Test.Service.Content
 			aetherbridge.CurrentLanguage = language;
 			var gameDataManager = new GameDataManager();
 			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
-			var languageService = new LanguageService(aetherbridge, languageRepository);
+			var languageService = new LanguageService(languageRepository, new FFXIVACTPluginWrapperMock());
 			IGameDataRepository<ContentFinderCondition> contentRepository =
 				new GameDataRepository<ContentFinderCondition>(gameDataManager.ContentFinderCondition);
 			var pluginZones = new FFXIVACTPluginWrapperMock().GetZoneList();

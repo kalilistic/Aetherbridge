@@ -14,7 +14,7 @@ namespace ACT_FFXIV_Aetherbridge.Test.LogLineParser
 		{
 			var language = new Language(3, "German");
 			_aetherbridge = (AetherbridgeMock) AetherbridgeMock.GetInstance(language);
-			_aetherbridge.CurrentLanguage = language;
+			_aetherbridge.LanguageService.UpdateCurrentLanguage(language);
 			_aetherbridge.AddLanguage(language);
 			_parser = new DELogLineParser(_aetherbridge);
 		}

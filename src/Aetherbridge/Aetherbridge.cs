@@ -42,7 +42,7 @@ namespace ACT_FFXIV_Aetherbridge
 		{
 			var gameDataManager = new GameDataManager();
 			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
-			LanguageService = new LanguageService(this, languageRepository);
+			LanguageService = new LanguageService(languageRepository, _ffxivACTPluginWrapper);
 			var worldRepository = new GameDataRepository<FFXIV.CrescentCove.World>(gameDataManager.World);
 			WorldService = new WorldService(worldRepository);
 			var classJobRepository = new GameDataRepository<FFXIV.CrescentCove.ClassJob>(gameDataManager.ClassJob);
@@ -55,7 +55,7 @@ namespace ACT_FFXIV_Aetherbridge
 			var itemRepository = new GameDataRepository<FFXIV.CrescentCove.Item>(gameDataManager.Item);
 			ItemService = new ItemService(LanguageService, itemRepository);
 			PlayerService = new PlayerService(_actWrapper, _ffxivACTPluginWrapper, WorldService, ClassJobService);
-			AddLanguage(GetCurrentLanguage());
+			AddLanguage(LanguageService.GetCurrentLanguage());
 		}
 
 		public void Initialize()
@@ -64,16 +64,9 @@ namespace ACT_FFXIV_Aetherbridge
 			EnableLogLineParser();
 		}
 
-		public Language GetCurrentLanguage()
-		{
-			var languageId = (int) _ffxivACTPluginWrapper.GetSelectedLanguage();
-			if (languageId == 0 || languageId > 4) languageId = 1;
-			return LanguageService.GetLanguageById(languageId);
-		}
-
 		public void InitLogLineParser()
 		{
-			var lang = GetCurrentLanguage();
+			var lang = LanguageService.GetCurrentLanguage();
 			switch (lang.Id)
 			{
 				case 1:

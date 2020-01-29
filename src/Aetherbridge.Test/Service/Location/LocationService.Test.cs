@@ -12,11 +12,11 @@ namespace ACT_FFXIV_Aetherbridge.Test.Service.Location
 		[SetUp]
 		public void TestInitialize()
 		{
-			var aetherbridge = AetherbridgeMock.GetInstance();
+			var plugin = new FFXIVACTPluginWrapperMock();
 			var language = new Language(1, "English");
 			var gameDataManager = new GameDataManager();
 			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
-			var languageService = new LanguageService(aetherbridge, languageRepository);
+			var languageService = new LanguageService(languageRepository, plugin);
 			_locationService = new LocationService(languageService, gameDataManager);
 			_locationService.AddLanguage(language);
 		}

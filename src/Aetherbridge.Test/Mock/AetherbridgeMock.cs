@@ -19,7 +19,7 @@ namespace ACT_FFXIV_Aetherbridge.Test.Mock
 			CurrentLanguage = language ?? new Language(1, "English");
 			var gameDataManager = new GameDataManager();
 			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
-			LanguageService = new LanguageService(this, languageRepository);
+			LanguageService = new LanguageService(languageRepository, _ffxivACTPluginWrapper);
 			var worldRepository = new GameDataRepository<FFXIV.CrescentCove.World>(gameDataManager.World);
 			WorldService = new WorldService(worldRepository);
 			var classJobRepository = new GameDataRepository<FFXIV.CrescentCove.ClassJob>(gameDataManager.ClassJob);

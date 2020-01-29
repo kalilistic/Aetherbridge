@@ -13,7 +13,6 @@ namespace ACT_FFXIV_Aetherbridge
 		PlayerService PlayerService { get; set; }
 		AetherbridgeConfig AetherbridgeConfig { get; set; }
 		event EventHandler<LogLineEvent> LogLineCaptured;
-		Language GetCurrentLanguage();
 		void InitGameData();
 		void Initialize();
 		void AddLanguage(Language language);

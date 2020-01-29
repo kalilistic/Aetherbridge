@@ -15,7 +15,7 @@ namespace ACT_FFXIV_Aetherbridge.Test.Service.ClassJob
 			aetherbridge.CurrentLanguage = language;
 			var gameDataManager = new GameDataManager();
 			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
-			var languageService = new LanguageService(aetherbridge, languageRepository);
+			var languageService = new LanguageService(languageRepository, new FFXIVACTPluginWrapperMock());
 			IGameDataRepository<FFXIV.CrescentCove.ClassJob> classJobRepository =
 				new GameDataRepository<FFXIV.CrescentCove.ClassJob>(gameDataManager.ClassJob);
 			_classJobService = new ClassJobService(languageService, classJobRepository);

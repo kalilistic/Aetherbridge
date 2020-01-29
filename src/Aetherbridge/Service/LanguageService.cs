@@ -7,16 +7,17 @@ namespace ACT_FFXIV_Aetherbridge
 {
 	public class LanguageService
 	{
-		private readonly IAetherbridge _aetherbridge;
+		private readonly IFFXIVACTPluginWrapper _ffxivACTPluginWrapper;
 		private readonly List<Language> _languages;
 		private Language _currentLanguage;
 		private IGameDataRepository<FFXIV.CrescentCove.Language> _repository;
 
-		public LanguageService(IAetherbridge aetherbridge, IGameDataRepository<FFXIV.CrescentCove.Language> repository)
+		public LanguageService(IGameDataRepository<FFXIV.CrescentCove.Language> repository,
+			IFFXIVACTPluginWrapper ffxivACTPluginWrapper)
 		{
-			_aetherbridge = aetherbridge;
 			_repository = repository;
 			_languages = MapToLanguages(_repository.GetAll().ToList());
+			_ffxivACTPluginWrapper = ffxivACTPluginWrapper;
 		}
 
 		public Language GetLanguageById(int id)
@@ -34,13 +35,6 @@ namespace ACT_FFXIV_Aetherbridge
 			return _languages;
 		}
 
-		public Language GetCurrentLanguage()
-		{
-			if (_currentLanguage != null) return _currentLanguage;
-			_currentLanguage = _aetherbridge.GetCurrentLanguage();
-			return _currentLanguage;
-		}
-
 		public void DeInit()
 		{
 			_repository = null;
@@ -54,6 +48,26 @@ namespace ACT_FFXIV_Aetherbridge
 		public static Language MapToLanguage(FFXIV.CrescentCove.Language gameDataLanguage)
 		{
 			return gameDataLanguage == null ? null : new Language(gameDataLanguage.Id, gameDataLanguage.Name);
+		}
+
+		public Language MapToLanguage(FFXIV_ACT_Plugin.Common.Language pluginLanguage)
+		{
+			var languageId = (int) pluginLanguage;
+			if (languageId == 0 || languageId > 4) languageId = 1;
+			return new Language(languageId, pluginLanguage.ToString());
+		}
+
+		public Language GetCurrentLanguage()
+		{
+			if (_currentLanguage != null) return _currentLanguage;
+			_currentLanguage = MapToLanguage(_ffxivACTPluginWrapper.GetSelectedLanguage());
+
+			return _currentLanguage;
+		}
+
+		public void UpdateCurrentLanguage(Language language)
+		{
+			_currentLanguage = language;
 		}
 	}
 }

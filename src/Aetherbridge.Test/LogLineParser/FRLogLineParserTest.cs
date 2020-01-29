@@ -14,7 +14,7 @@ namespace ACT_FFXIV_Aetherbridge.Test.LogLineParser
 		{
 			var language = new Language(2, "French");
 			_aetherbridge = (AetherbridgeMock) AetherbridgeMock.GetInstance(language);
-			_aetherbridge.CurrentLanguage = language;
+			_aetherbridge.LanguageService.UpdateCurrentLanguage(language);
 			_aetherbridge.AddLanguage(language);
 			_parser = new FRLogLineParser(_aetherbridge);
 		}
