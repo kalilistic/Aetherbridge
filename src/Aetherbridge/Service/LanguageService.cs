@@ -16,17 +16,17 @@ namespace ACT_FFXIV_Aetherbridge
 		{
 			_aetherbridge = aetherbridge;
 			_repository = repository;
-			_languages = LanguageMapper.MapToLanguages(_repository.GetAll().ToList());
+			_languages = MapToLanguages(_repository.GetAll().ToList());
 		}
 
 		public Language GetLanguageById(int id)
 		{
-			return LanguageMapper.MapToLanguage(_repository.GetById(id));
+			return MapToLanguage(_repository.GetById(id));
 		}
 
 		public Language GetLanguageById(uint id)
 		{
-			return LanguageMapper.MapToLanguage(_repository.GetById(Convert.ToInt32(id)));
+			return MapToLanguage(_repository.GetById(Convert.ToInt32(id)));
 		}
 
 		public List<Language> GetLanguages()
@@ -44,6 +44,16 @@ namespace ACT_FFXIV_Aetherbridge
 		public void DeInit()
 		{
 			_repository = null;
+		}
+
+		public static List<Language> MapToLanguages(List<FFXIV.CrescentCove.Language> gameDataLanguages)
+		{
+			return gameDataLanguages?.Select(MapToLanguage).ToList();
+		}
+
+		public static Language MapToLanguage(FFXIV.CrescentCove.Language gameDataLanguage)
+		{
+			return gameDataLanguage == null ? null : new Language(gameDataLanguage.Id, gameDataLanguage.Name);
 		}
 	}
 }

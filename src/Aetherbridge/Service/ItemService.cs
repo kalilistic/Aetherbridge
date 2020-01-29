@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using FFXIV.CrescentCove;
 
 // ReSharper disable InvertIf
@@ -32,7 +33,7 @@ namespace ACT_FFXIV_Aetherbridge
 			var crescentItems = _repository.GetAll();
 			foreach (var crescentItem in crescentItems)
 			{
-				var item = ItemMapper.MapToItem(crescentItem, language);
+				var item = MapToItem(crescentItem, language);
 				_items[language.Index].Add(item);
 				_itemNames[language.Index].Add(item.ProperName);
 				if (item.IsCommon) _commonItemNames[language.Index].Add(item.ProperName);
@@ -101,6 +102,28 @@ namespace ACT_FFXIV_Aetherbridge
 			_items = null;
 			_commonItemNames = null;
 			_itemNames = null;
+		}
+
+		public static List<Item> MapToItems(List<FFXIV.CrescentCove.Item> items, Language language)
+		{
+			return items.Select(item => MapToItem(item, language)).ToList();
+		}
+
+		public static Item MapToItem(FFXIV.CrescentCove.Item item, Language language)
+		{
+			if (item == null) return null;
+			return new Item
+			{
+				Id = item.Id,
+				ProperName = item.Localized[language.Index].ProperName,
+				SingularName = item.Localized[language.Index].SingularName,
+				SingularNameKeyword = item.Localized[language.Index].SingularNameKeyword,
+				SingularNameRegex = new Regex(item.Localized[language.Index].SingularNameREP, RegexOptions.Compiled),
+				PluralName = item.Localized[language.Index].PluralName,
+				PluralNameKeyword = item.Localized[language.Index].PluralNameKeyword,
+				PluralNameRegex = new Regex(item.Localized[language.Index].PluralNameREP, RegexOptions.Compiled),
+				IsCommon = item.IsCommon
+			};
 		}
 	}
 }

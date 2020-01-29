@@ -16,17 +16,17 @@ namespace ACT_FFXIV_Aetherbridge
 
 		public World GetWorldById(int id)
 		{
-			return WorldMapper.MapToWorld(_repository.GetById(id));
+			return MapToWorld(_repository.GetById(id));
 		}
 
 		public World GetWorldById(uint id)
 		{
-			return WorldMapper.MapToWorld(_repository.GetById(Convert.ToInt32(id)));
+			return MapToWorld(_repository.GetById(Convert.ToInt32(id)));
 		}
 
 		public List<World> GetWorlds()
 		{
-			return WorldMapper.MapToWorlds(_repository.GetAll().ToList());
+			return MapToWorlds(_repository.GetAll().ToList());
 		}
 
 		public string GetWorldsAsDelimitedString()
@@ -41,6 +41,21 @@ namespace ACT_FFXIV_Aetherbridge
 		public void DeInit()
 		{
 			_repository = null;
+		}
+
+		public static List<World> MapToWorlds(List<FFXIV.CrescentCove.World> gameDataWorlds)
+		{
+			return gameDataWorlds?.Select(MapToWorld).ToList();
+		}
+
+		public static World MapToWorld(FFXIV.CrescentCove.World gameDataWorld)
+		{
+			if (gameDataWorld == null) return null;
+			return new World
+			{
+				Id = gameDataWorld.Id,
+				Name = gameDataWorld.Name
+			};
 		}
 	}
 }
