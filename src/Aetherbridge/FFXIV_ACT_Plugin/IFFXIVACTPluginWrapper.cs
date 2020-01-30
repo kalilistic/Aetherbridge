@@ -3,7 +3,7 @@ using FFXIV_ACT_Plugin.Common.Models;
 
 namespace ACT_FFXIV_Aetherbridge
 {
-	internal interface IFFXIVACTPluginWrapper
+	public interface IFFXIVACTPluginWrapper
 	{
 		FFXIV_ACT_Plugin.Common.Language GetSelectedLanguage();
 		uint GetCurrentTerritoryId();

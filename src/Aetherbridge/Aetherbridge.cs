@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using FFXIV.CrescentCove;
 
 namespace ACT_FFXIV_Aetherbridge
@@ -10,8 +9,7 @@ namespace ACT_FFXIV_Aetherbridge
 		private static readonly object Lock = new object();
 		private static IACTWrapper _actWrapper;
 		private static IFFXIVACTPluginWrapper _ffxivACTPluginWrapper;
-		private static PlayerMapper _playerMapper;
-		internal ILogLineParser LogLineParser;
+		internal ILogLineParserFactory LogLineParserFactory;
 
 		private Aetherbridge()
 		{
@@ -20,35 +18,16 @@ namespace ACT_FFXIV_Aetherbridge
 			AetherbridgeConfig = new AetherbridgeConfig();
 		}
 
-		public IClassJobService ClassJobService { get; set; }
-		public IWorldService WorldService { get; set; }
-		public ILocationService LocationService { get; set; }
-		public IContentService ContentService { get; set; }
-		public IItemService ItemService { get; set; }
-		public ILanguageService LanguageService { get; set; }
-		public IAetherbridgeConfig AetherbridgeConfig { get; set; }
+		public ClassJobService ClassJobService { get; set; }
+		public WorldService WorldService { get; set; }
+		public LocationService LocationService { get; set; }
+		public ContentService ContentService { get; set; }
+		public ItemService ItemService { get; set; }
+		public LanguageService LanguageService { get; set; }
+		public PlayerService PlayerService { get; set; }
+		public AetherbridgeConfig AetherbridgeConfig { get; set; }
 
-		public void InitLogLineParser()
-		{
-			var lang = GetCurrentLanguage();
-			switch (lang.Id)
-			{
-				case 1:
-					LogLineParser = new ENLogLineParser(this);
-					break;
-				case 2:
-					LogLineParser = new FRLogLineParser(this);
-					break;
-				case 3:
-					LogLineParser = new DELogLineParser(this);
-					break;
-				case 4:
-					LogLineParser = new JALogLineParser(this);
-					break;
-			}
-		}
-
-		public void AddLanguage(ILanguage language)
+		public void AddLanguage(Language language)
 		{
 			ClassJobService.AddLanguage(language);
 			LocationService.AddLanguage(language);
@@ -56,12 +35,59 @@ namespace ACT_FFXIV_Aetherbridge
 			ItemService.AddLanguage(language);
 		}
 
-		public event EventHandler<ILogLineEvent> LogLineCaptured;
+		public event EventHandler<LogLineEvent> LogLineCaptured;
+
+
+		public void InitGameData()
+		{
+			var gameDataManager = new GameDataManager();
+			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
+			LanguageService = new LanguageService(languageRepository, _ffxivACTPluginWrapper);
+			var worldRepository = new GameDataRepository<FFXIV.CrescentCove.World>(gameDataManager.World);
+			WorldService = new WorldService(worldRepository);
+			var classJobRepository = new GameDataRepository<FFXIV.CrescentCove.ClassJob>(gameDataManager.ClassJob);
+			ClassJobService = new ClassJobService(LanguageService, classJobRepository);
+			LocationService = new LocationService(LanguageService, gameDataManager, _ffxivACTPluginWrapper);
+			var contentRepository =
+				new GameDataRepository<ContentFinderCondition>(gameDataManager.ContentFinderCondition);
+			ContentService =
+				new ContentService(LanguageService, _ffxivACTPluginWrapper.GetZoneList(), contentRepository);
+			var itemRepository = new GameDataRepository<FFXIV.CrescentCove.Item>(gameDataManager.Item);
+			ItemService = new ItemService(LanguageService, itemRepository);
+			PlayerService = new PlayerService(_actWrapper, _ffxivACTPluginWrapper, WorldService, ClassJobService);
+			AddLanguage(LanguageService.GetCurrentLanguage());
+		}
+
+		public void Initialize()
+		{
+			InitGameData();
+			EnableLogLineParser();
+		}
+
+		public void InitLogLineParser()
+		{
+			var lang = LanguageService.GetCurrentLanguage();
+			switch (lang.Id)
+			{
+				case 1:
+					LogLineParserFactory = new ENLogLineParserFactory(this);
+					break;
+				case 2:
+					LogLineParserFactory = new FRLogLineParserFactory(this);
+					break;
+				case 3:
+					LogLineParserFactory = new DELogLineParserFactory(this);
+					break;
+				case 4:
+					LogLineParserFactory = new JALogLineParserFactory(this);
+					break;
+			}
+		}
 
 		public void EnableLogLineParser()
 		{
 			if (AetherbridgeConfig.LogLineParserEnabled) return;
-			if (LogLineParser == null) InitLogLineParser();
+			if (LogLineParserFactory == null) InitLogLineParser();
 			AetherbridgeConfig.LogLineParserEnabled = true;
 			_actWrapper.ACTLogLineParserEnabled = true;
 			_actWrapper.ACTLogLineCaptured += ACTLogLineCaptured;
@@ -77,58 +103,10 @@ namespace ACT_FFXIV_Aetherbridge
 
 		public void ACTLogLineCaptured(object sender, ACTLogLineEvent actLogLineEvent)
 		{
-			var logLineEvent = LogLineParser.Parse(actLogLineEvent);
+			var logLineEvent = LogLineParserFactory.CreateParser().Parse(actLogLineEvent);
 			if (!actLogLineEvent.IsImport && logLineEvent?.XIVEvent != null)
-				logLineEvent.XIVEvent.Location = GetCurrentLocation();
+				logLineEvent.XIVEvent.Location = LocationService.GetCurrentLocation();
 			LogLineCaptured?.Invoke(this, logLineEvent);
-		}
-
-		public IPlayer GetCurrentPlayerACT()
-		{
-			return new Player {Name = _actWrapper.GetCharacterName(), IsReporter = true};
-		}
-
-		public IPlayer GetCurrentPlayer()
-		{
-			var combatant = _ffxivACTPluginWrapper.GetCurrentCombatant();
-			IPlayer player;
-			if (combatant == null)
-			{
-				var importName = ACTWrapper.GetInstance().GetCharacterName();
-				player = importName.Equals(string.Empty) || !importName.Contains(" ")
-					? new Player {Name = "Your Character"}
-					: new Player {Name = ACTWrapper.GetInstance().GetCharacterName()};
-			}
-			else
-			{
-				player = _playerMapper.MapToPlayer(combatant);
-			}
-
-			player.IsReporter = true;
-			return player;
-		}
-
-		public List<IPlayer> GetPartyMembers()
-		{
-			return _playerMapper.MapToPlayers(_ffxivACTPluginWrapper.GetPartyCombatants());
-		}
-
-		public List<IPlayer> GetAllianceMembers()
-		{
-			return _playerMapper.MapToPlayers(_ffxivACTPluginWrapper.GetAllianceCombatants());
-		}
-
-		public IPlayer GetPlayerByName(string name)
-		{
-			try
-			{
-				var combatant = _ffxivACTPluginWrapper.GetCombatantByName(name);
-				return _playerMapper.MapToPlayer(combatant);
-			}
-			catch (Exception)
-			{
-				return new Player {Name = ACTWrapper.GetInstance().GetCharacterName()};
-			}
 		}
 
 		public void DeInit()
@@ -141,44 +119,6 @@ namespace ACT_FFXIV_Aetherbridge
 			_actWrapper = ACTWrapper.GetInstance();
 			FFXIVACTPluginWrapper.Initialize(_actWrapper);
 			_ffxivACTPluginWrapper = FFXIVACTPluginWrapper.GetInstance();
-		}
-
-		public void InitGameData()
-		{
-			var gameDataManager = new GameDataManager();
-			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
-			LanguageService = new LanguageService(this, languageRepository);
-			var worldRepository = new GameDataRepository<FFXIV.CrescentCove.World>(gameDataManager.World);
-			WorldService = new WorldService(worldRepository);
-			var classJobRepository = new GameDataRepository<FFXIV.CrescentCove.ClassJob>(gameDataManager.ClassJob);
-			ClassJobService = new ClassJobService(LanguageService, classJobRepository);
-			LocationService = new LocationService(LanguageService, gameDataManager);
-			var contentRepository =
-				new GameDataRepository<ContentFinderCondition>(gameDataManager.ContentFinderCondition);
-			ContentService =
-				new ContentService(LanguageService, _ffxivACTPluginWrapper.GetZoneList(), contentRepository);
-			var itemRepository = new GameDataRepository<FFXIV.CrescentCove.Item>(gameDataManager.Item);
-			ItemService = new ItemService(LanguageService, itemRepository);
-			_playerMapper = new PlayerMapper(WorldService, ClassJobService);
-			AddLanguage(GetCurrentLanguage());
-		}
-
-		public void Initialize()
-		{
-			InitGameData();
-			EnableLogLineParser();
-		}
-
-		public ILocation GetCurrentLocation()
-		{
-			return LocationService.GetLocationById(Convert.ToInt32(_ffxivACTPluginWrapper.GetCurrentTerritoryId()));
-		}
-
-		public ILanguage GetCurrentLanguage()
-		{
-			var languageId = (int) _ffxivACTPluginWrapper.GetSelectedLanguage();
-			if (languageId == 0 || languageId > 4) languageId = 1;
-			return LanguageService.GetLanguageById(languageId);
 		}
 
 		public string GetAppDirectory()

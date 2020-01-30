@@ -10,6 +10,9 @@
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=ffxiv_005Fact_005Fplugin_005Cenum/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=ffxiv_005Fact_005Fplugin_005Cloglineparser/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=ffxiv_005Fact_005Fplugin_005Cloglineparser_005Cloglinelootparser/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=ffxiv_005Fact_005Fplugin_005Cloglineparser_005Cloglineparser/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=ffxiv_005Fact_005Fplugin_005Cloglineparser_005Cloglineparsercontext/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=ffxiv_005Fact_005Fplugin_005Cloglineparser_005Cloglineparserfactory/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=ffxiv_005Fact_005Fplugin_005Cloglineparser_005Clootparser/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=ffxiv_005Fact_005Fplugin_005Cloglineparser_005Cstrategy/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=ffxiv_005Fact_005Fplugin_005Cmock/@EntryIndexedValue">True</s:Boolean>

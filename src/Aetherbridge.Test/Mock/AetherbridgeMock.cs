@@ -2,144 +2,146 @@
 using System.Collections.Generic;
 using FFXIV.CrescentCove;
 
-namespace ACT_FFXIV_Aetherbridge.Test.Mock
+namespace ACT_FFXIV_Aetherbridge.Test
 {
-    internal class AetherbridgeMock : IAetherbridge
-    {
-        private static volatile IAetherbridge _aetherbridge;
-        private static readonly object Lock = new object();
-        private static IACTWrapper _actWrapper;
-        private static IFFXIVACTPluginWrapper _ffxivACTPluginWrapper;
-        internal readonly ILogLineParser LogLineParser;
-        public PlayerMapper PlayerMapper;
-        public ILanguage CurrentLanguage { get; set; }
+	internal class AetherbridgeMock : IAetherbridge
+	{
+		private static volatile IAetherbridge _aetherbridge;
+		private static readonly object Lock = new object();
+		private static IACTWrapper _actWrapper;
+		private static IFFXIVACTPluginWrapper _ffxivACTPluginWrapper;
+		internal ILogLineParserFactory LogLineParserFactory;
 
-        private AetherbridgeMock(Language language)
-        {
-            _actWrapper = new ACTWrapperMock();
-            _ffxivACTPluginWrapper = new FFXIVACTPluginWrapperMock();
-            CurrentLanguage = language ?? new Language(1, "English");
-            var gameDataManager = new GameDataManager();
-            var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
-            LanguageService = new LanguageService(this, languageRepository);
-            var worldRepository = new GameDataRepository<FFXIV.CrescentCove.World>(gameDataManager.World);
-            WorldService = new WorldService(worldRepository);
-            var classJobRepository = new GameDataRepository<FFXIV.CrescentCove.ClassJob>(gameDataManager.ClassJob);
-            ClassJobService = new ClassJobService(LanguageService, classJobRepository);
-            LocationService = new LocationService(LanguageService, gameDataManager);
-            var contentRepository =
-	            new GameDataRepository<ContentFinderCondition>(gameDataManager.ContentFinderCondition);
-            ContentService = new ContentService(LanguageService, _ffxivACTPluginWrapper.GetZoneList(), contentRepository);
-            var itemRepository = new GameDataRepository<FFXIV.CrescentCove.Item>(gameDataManager.Item);
-            ItemService = new ItemService(LanguageService, itemRepository);
-            LogLineParser = new ENLogLineParser(this);
-            PlayerMapper = new PlayerMapper(WorldService, ClassJobService);
-        }
+		private AetherbridgeMock(Language language)
+		{
+			_actWrapper = new ACTWrapperMock();
+			_ffxivACTPluginWrapper = new FFXIVACTPluginWrapperMock();
+			CurrentLanguage = language ?? new Language(1, "English");
+			var gameDataManager = new GameDataManager();
+			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
+			LanguageService = new LanguageService(languageRepository, _ffxivACTPluginWrapper);
+			var worldRepository = new GameDataRepository<FFXIV.CrescentCove.World>(gameDataManager.World);
+			WorldService = new WorldService(worldRepository);
+			var classJobRepository = new GameDataRepository<FFXIV.CrescentCove.ClassJob>(gameDataManager.ClassJob);
+			ClassJobService = new ClassJobService(LanguageService, classJobRepository);
+			LocationService = new LocationService(LanguageService, gameDataManager, _ffxivACTPluginWrapper);
+			var contentRepository =
+				new GameDataRepository<ContentFinderCondition>(gameDataManager.ContentFinderCondition);
+			ContentService =
+				new ContentService(LanguageService, _ffxivACTPluginWrapper.GetZoneList(), contentRepository);
+			var itemRepository = new GameDataRepository<FFXIV.CrescentCove.Item>(gameDataManager.Item);
+			ItemService = new ItemService(LanguageService, itemRepository);
+			PlayerService = new PlayerService(_actWrapper, _ffxivACTPluginWrapper, WorldService, ClassJobService);
+			LogLineParserFactory = new ENLogLineParserFactory(this);
+		}
 
-        public event EventHandler<ILogLineEvent> LogLineCaptured = delegate { };
-        public IClassJobService ClassJobService { get; set; }
-        public IWorldService WorldService { get; set; }
-        public ILocationService LocationService { get; set; }
-        public IContentService ContentService { get; set; }
-        public IItemService ItemService { get; }
-        public ILanguageService LanguageService { get; set; }
-        public IAetherbridgeConfig AetherbridgeConfig { get; set; }
+		public Language CurrentLanguage { get; set; }
+
+		public event EventHandler<LogLineEvent> LogLineCaptured = delegate { };
+		public ClassJobService ClassJobService { get; set; }
+		public WorldService WorldService { get; set; }
+		public LocationService LocationService { get; set; }
+		public ContentService ContentService { get; set; }
+		public ItemService ItemService { get; }
+		public LanguageService LanguageService { get; set; }
+		public PlayerService PlayerService { get; set; }
+		public AetherbridgeConfig AetherbridgeConfig { get; set; }
+
+		public Player GetCurrentPlayer()
+		{
+			var player = PlayerService.MapToPlayer(_ffxivACTPluginWrapper.GetCurrentCombatant());
+			player.IsReporter = true;
+			return player;
+		}
+
+		public Language GetCurrentLanguage()
+		{
+			return CurrentLanguage;
+		}
+
+		public void InitGameData()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Initialize()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void AddLanguage(Language language)
+		{
+			ClassJobService.AddLanguage(language);
+			LocationService.AddLanguage(language);
+			ContentService.AddLanguage(language);
+			ItemService.AddLanguage(language);
+		}
 
 
-        public void EnableLogLineParser()
-        {
-            throw new NotImplementedException();
-        }
+		public void EnableLogLineParser()
+		{
+			throw new NotImplementedException();
+		}
 
-        public void DisableLogLineParser()
-        {
-            throw new NotImplementedException();
-        }
+		public void DisableLogLineParser()
+		{
+			throw new NotImplementedException();
+		}
 
-        public void ACTLogLineCaptured(object sender, ACTLogLineEvent actLogLineEvent)
-        {
-            throw new NotImplementedException();
-        }
+		public void ACTLogLineCaptured(object sender, ACTLogLineEvent actLogLineEvent)
+		{
+			throw new NotImplementedException();
+		}
 
-        public IPlayer GetCurrentPlayer()
-        {
-	        var player = PlayerMapper.MapToPlayer(_ffxivACTPluginWrapper.GetCurrentCombatant());
-	        player.IsReporter = true;
-	        return player;
-        }
+		public Player GetCurrentPlayerACT()
+		{
+			throw new NotImplementedException();
+		}
 
-        public ILanguage GetCurrentLanguage()
-        {
-            return CurrentLanguage;
-        }
+		public List<Player> GetPartyMembers()
+		{
+			throw new NotImplementedException();
+		}
 
-        public void InitGameData()
-        {
-	        throw new NotImplementedException();
-        }
+		public List<Player> GetAllianceMembers()
+		{
+			throw new NotImplementedException();
+		}
 
-        public void Initialize()
-        {
-	        throw new NotImplementedException();
-        }
+		public Player GetPlayerByName(string name)
+		{
+			var player = new Player {Name = name};
+			return player;
+		}
 
-        public void AddLanguage(ILanguage language)
-        {
-            ClassJobService.AddLanguage(language);
-            LocationService.AddLanguage(language);
-            ContentService.AddLanguage(language);
-            ItemService.AddLanguage(language);
-        }
+		public void DeInit()
+		{
+			_aetherbridge = null;
+			CurrentLanguage = null;
+		}
 
-        public IPlayer GetCurrentPlayerACT()
-        {
-            throw new NotImplementedException();
-        }
+		public static IAetherbridge GetInstance()
+		{
+			if (_aetherbridge != null) return _aetherbridge;
 
-        public List<IPlayer> GetPartyMembers()
-        {
-            throw new NotImplementedException();
-        }
+			lock (Lock)
+			{
+				if (_aetherbridge == null) _aetherbridge = new AetherbridgeMock(null);
+			}
 
-        public List<IPlayer> GetAllianceMembers()
-        {
-            throw new NotImplementedException();
-        }
+			return _aetherbridge;
+		}
 
-        public IPlayer GetPlayerByName(string name)
-        {
-            var player = new Player {Name = name};
-            return player;
-        }
+		public static IAetherbridge GetInstance(Language language)
+		{
+			if (_aetherbridge != null) return _aetherbridge;
 
-        public void DeInit()
-        {
-	        _aetherbridge = null;
-	        CurrentLanguage = null;
-        }
+			lock (Lock)
+			{
+				if (_aetherbridge == null) _aetherbridge = new AetherbridgeMock(language);
+			}
 
-        public static IAetherbridge GetInstance()
-        {
-            if (_aetherbridge != null) return _aetherbridge;
-
-            lock (Lock)
-            {
-                if (_aetherbridge == null) _aetherbridge = new AetherbridgeMock(null);
-            }
-
-            return _aetherbridge;
-        }
-
-        public static IAetherbridge GetInstance(Language language)
-        {
-	        if (_aetherbridge != null) return _aetherbridge;
-
-	        lock (Lock)
-	        {
-		        if (_aetherbridge == null) _aetherbridge = new AetherbridgeMock(language);
-	        }
-
-	        return _aetherbridge;
-        }
-    }
+			return _aetherbridge;
+		}
+	}
 }
