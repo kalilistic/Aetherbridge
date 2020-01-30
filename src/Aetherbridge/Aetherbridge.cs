@@ -9,7 +9,7 @@ namespace ACT_FFXIV_Aetherbridge
 		private static readonly object Lock = new object();
 		private static IACTWrapper _actWrapper;
 		private static IFFXIVACTPluginWrapper _ffxivACTPluginWrapper;
-		internal ILogLineParser LogLineParser;
+		internal ILogLineParserFactory LogLineParserFactory;
 
 		private Aetherbridge()
 		{
@@ -70,16 +70,16 @@ namespace ACT_FFXIV_Aetherbridge
 			switch (lang.Id)
 			{
 				case 1:
-					LogLineParser = new ENLogLineParser(this);
+					LogLineParserFactory = new ENLogLineParserFactory(this);
 					break;
 				case 2:
-					LogLineParser = new FRLogLineParser(this);
+					LogLineParserFactory = new FRLogLineParserFactory(this);
 					break;
 				case 3:
-					LogLineParser = new DELogLineParser(this);
+					LogLineParserFactory = new DELogLineParserFactory(this);
 					break;
 				case 4:
-					LogLineParser = new JALogLineParser(this);
+					LogLineParserFactory = new JALogLineParserFactory(this);
 					break;
 			}
 		}
@@ -87,7 +87,7 @@ namespace ACT_FFXIV_Aetherbridge
 		public void EnableLogLineParser()
 		{
 			if (AetherbridgeConfig.LogLineParserEnabled) return;
-			if (LogLineParser == null) InitLogLineParser();
+			if (LogLineParserFactory == null) InitLogLineParser();
 			AetherbridgeConfig.LogLineParserEnabled = true;
 			_actWrapper.ACTLogLineParserEnabled = true;
 			_actWrapper.ACTLogLineCaptured += ACTLogLineCaptured;
@@ -103,7 +103,7 @@ namespace ACT_FFXIV_Aetherbridge
 
 		public void ACTLogLineCaptured(object sender, ACTLogLineEvent actLogLineEvent)
 		{
-			var logLineEvent = LogLineParser.Parse(actLogLineEvent);
+			var logLineEvent = LogLineParserFactory.CreateParser().Parse(actLogLineEvent);
 			if (!actLogLineEvent.IsImport && logLineEvent?.XIVEvent != null)
 				logLineEvent.XIVEvent.Location = LocationService.GetCurrentLocation();
 			LogLineCaptured?.Invoke(this, logLineEvent);

@@ -40,7 +40,7 @@ namespace ACT_FFXIV_Aetherbridge
 
 		public static List<ClassJob> MapToClassJobs(List<FFXIV.CrescentCove.ClassJob> classJobs, Language language)
 		{
-			return classJobs.Select<FFXIV.CrescentCove.ClassJob, ClassJob>(classJob => MapToClassJob(classJob, language)).ToList();
+			return classJobs.Select(classJob => MapToClassJob(classJob, language)).ToList();
 		}
 
 		public static ClassJob MapToClassJob(FFXIV.CrescentCove.ClassJob classJob, Language language)

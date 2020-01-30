@@ -1,31 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace ACT_FFXIV_Aetherbridge
+﻿namespace ACT_FFXIV_Aetherbridge
 {
 	internal class DELogLineParser : LogLineParserBase, ILogLineParser
 	{
-		public DELogLineParser(IAetherbridge aetherbridge) : base(aetherbridge)
+		public DELogLineParser(ILogLineParserContext context) : base(context)
 		{
-			ObtainRegex =
-				CreateRegex(
-					@"^(?<ActorNameWithWorldName>[^\s]+ ?[^\s]+).+?(?:hast|hat) (?:einen |eine |ein )?(?<RawItemName>.*?) erhalten\.");
-			ObtainWithMostRareRegex =
-				CreateRegex(
-					@"^(?<ActorNameWithWorldName>[^\s]+ ?[^\s]+).+?findest und erhältst (?:einen |eine |ein )?(?<RawItemName>.*?) - (?:einen |eine |ein )?höchst seltener (?:Fund|Gegenstand)!");
-			UnableToObtainRegex = CreateRegex(@"^Du konntest (?:das |der |die )?(?<RawItemName>.*?) nicht erhalten\.");
-			ItemNameRegex = CreateRegex(@"^((the )?(?<Quantity>[\d,\.]+[^\s]?) )?(?<ItemName>.*)");
-			ItemAddedRegex =
-				CreateRegex(@"^Ihr habt Beutegut \((?:einen |eine |ein )?(?<RawItemName>.*?)\) erhalten\.");
-			GreedRegex =
-				CreateRegex(
-					@"^(?<ActorNameWithWorldName>[^\s]+ ?[^\s]+) würfel(s)?t mit „Gier“ (?:einen |eine |ein )?(?<Roll>.*) auf (?:das |der |die )?(?<RawItemName>.+)\.");
-			NeedRegex = CreateRegex(
-				@"^(?<ActorNameWithWorldName>[^\s]+ ?[^\s]+) würfel(s)?t mit „Bedarf“ (?:einen |eine |ein )?(?<Roll>.*) auf (?:das |der |die )?(?<RawItemName>.+)\.");
-			ActorWithWorldNameRegex =
-				CreateRegex(@"(?<ActorName>[A-Za-z'\-\.]+ [A-Za-z'\-\.]+)(?<WorldName>" + WorldsList + ")");
-			LootFalsePositives = new List<string>();
-			YouLocalized = "DU";
-			NumberDelimiterLocalized = ".";
 		}
 
 		public new LogLineEvent Parse(ACTLogLineEvent actLogLineEvent)
@@ -37,8 +15,8 @@ namespace ACT_FFXIV_Aetherbridge
 		public override Item FindItem(string itemName, int quantity)
 		{
 			return quantity > 1
-				? Aetherbridge.ItemService.GetItemByPluralRegex(itemName)
-				: Aetherbridge.ItemService.GetItemBySingularRegex(itemName);
+				? Context.Aetherbridge.ItemService.GetItemByPluralRegex(itemName)
+				: Context.Aetherbridge.ItemService.GetItemBySingularRegex(itemName);
 		}
 
 		public override void NormalizeObtainWithMostRare()

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
 
 // ReSharper disable InvertIf
@@ -8,41 +7,12 @@ namespace ACT_FFXIV_Aetherbridge
 {
 	public abstract class LogLineParserBase
 	{
-		internal static Regex ObtainRegex;
-		internal static Regex ObtainWithMostRareRegex;
-		internal static Regex UnableToObtainRegex;
-		internal static Regex ItemNameRegex;
-		internal static Regex ItemAddedRegex;
-		internal static Regex GreedRegex;
-		internal static Regex NeedRegex;
-		internal static Regex ActorWithWorldNameRegex;
-		internal static Regex TimestampRegex;
-		internal static Regex LogLineCodeRegex;
-		internal static Regex GameLogCodeRegex;
-		internal static List<string> LootFalsePositives;
-		internal static string YouLocalized;
-		internal static string NumberDelimiterLocalized;
-
-		internal IAetherbridge Aetherbridge;
-		internal string HQChar;
-		internal string HQString;
+		protected ILogLineParserContext Context;
 		protected LogLineEvent LogLineEvent;
-		internal string WorldsList;
 
-		protected LogLineParserBase(IAetherbridge aetherbridge)
+		protected LogLineParserBase(ILogLineParserContext context)
 		{
-			Aetherbridge = aetherbridge;
-			WorldsList = Aetherbridge.WorldService.GetWorldsAsDelimitedString();
-			TimestampRegex = CreateRegex(@"^\[(?<Timestamp>[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3})] (?<Residual>.*)");
-			LogLineCodeRegex = CreateRegex(@"^(?<LogCode>[^:]*):(?<Residual>.*)");
-			GameLogCodeRegex = CreateRegex(@"^(?<GameLogCode>[^:]*):(?<Residual>.*)");
-			HQChar = "\uE03C";
-			HQString = "(HQ)";
-		}
-
-		public Regex CreateRegex(string pattern)
-		{
-			return new Regex(pattern, RegexOptions.Compiled);
+			Context = context;
 		}
 
 		public void Parse(ACTLogLineEvent actLogLineEvent)
@@ -67,14 +37,14 @@ namespace ACT_FFXIV_Aetherbridge
 
 		private void ExtractTimestamp()
 		{
-			var match = TimestampRegex.Match(LogLineEvent.LogMessage);
+			var match = Context.TimestampRegex.Match(LogLineEvent.LogMessage);
 			LogLineEvent.Timestamp = match.Groups["Timestamp"].Value;
 			LogLineEvent.LogMessage = match.Groups["Residual"].Value;
 		}
 
 		private void ExtractLogCode()
 		{
-			var match = LogLineCodeRegex.Match(LogLineEvent.LogMessage);
+			var match = Context.LogLineCodeRegex.Match(LogLineEvent.LogMessage);
 			LogLineEvent.LogCode = match.Groups["LogCode"].Value;
 			LogLineEvent.LogMessage = match.Groups["Residual"].Value;
 		}
@@ -82,7 +52,7 @@ namespace ACT_FFXIV_Aetherbridge
 		private void ExtractGameLogCode()
 		{
 			if (!LogLineEvent.LogCode.Equals("00")) return;
-			var match = GameLogCodeRegex.Match(LogLineEvent.LogMessage);
+			var match = Context.GameLogCodeRegex.Match(LogLineEvent.LogMessage);
 			LogLineEvent.LogMessage = match.Groups["Residual"].Value;
 			LogLineEvent.GameLogCode = match.Groups["GameLogCode"].Value;
 		}
@@ -98,13 +68,13 @@ namespace ACT_FFXIV_Aetherbridge
 		{
 			LogLineEvent.LogMessage = LogLineEvent.LogMessage.Trim();
 			LogLineEvent.LogMessage = LogLineEvent.LogMessage.Replace(" .", ".");
-			LogLineEvent.LogMessage = LogLineEvent.LogMessage.Replace("\uE03C", HQString);
+			LogLineEvent.LogMessage = LogLineEvent.LogMessage.Replace("\uE03C", Context.HQString);
 		}
 
 		private void RemoveWorldName()
 		{
 			if (!LogLineEvent.LogCode.Equals("00")) return;
-			var matches = ActorWithWorldNameRegex.Matches(LogLineEvent.LogMessage);
+			var matches = Context.ActorWithWorldNameRegex.Matches(LogLineEvent.LogMessage);
 
 			foreach (Match match in matches)
 			{
@@ -126,16 +96,16 @@ namespace ACT_FFXIV_Aetherbridge
 		protected void ParseRawItemName(Match match, DraftItem draftItem)
 		{
 			var rawItemName = match.Groups["RawItemName"].Value;
-			rawItemName = rawItemName.Replace(" " + HQChar, string.Empty);
-			rawItemName = rawItemName.Replace(HQChar, string.Empty);
+			rawItemName = rawItemName.Replace(" " + Context.HQChar, string.Empty);
+			rawItemName = rawItemName.Replace(Context.HQChar, string.Empty);
 			draftItem.RawItemName = rawItemName;
 		}
 
 		protected virtual void ParseItemNameAndQuantity(DraftItem draftItem)
 		{
-			var match = ItemNameRegex.Match(draftItem.RawItemName);
+			var match = Context.ItemNameRegex.Match(draftItem.RawItemName);
 			draftItem.ItemName = match.Groups["ItemName"].Value.Trim();
-			var quantityStr = match.Groups["Quantity"].Value.Replace(NumberDelimiterLocalized, string.Empty);
+			var quantityStr = match.Groups["Quantity"].Value.Replace(Context.NumberDelimiterLocalized, string.Empty);
 			try
 			{
 				draftItem.Quantity = int.Parse(quantityStr);
@@ -151,7 +121,7 @@ namespace ACT_FFXIV_Aetherbridge
 			var item = FindItem(draftItem.ItemName, draftItem.Quantity);
 			if (item == null) return null;
 			item.Quantity = draftItem.Quantity;
-			item.IsHQ = LogLineEvent.LogMessage.Contains(HQChar);
+			item.IsHQ = LogLineEvent.LogMessage.Contains(Context.HQChar);
 			return item;
 		}
 
@@ -166,7 +136,7 @@ namespace ACT_FFXIV_Aetherbridge
 		protected virtual Player CreateActor(Match actorMatch)
 		{
 			var actorName = actorMatch.Groups["ActorNameWithWorldName"].Value;
-			var currentPlayer = Aetherbridge.PlayerService.GetCurrentPlayer();
+			var currentPlayer = Context.Aetherbridge.PlayerService.GetCurrentPlayer();
 
 			if (actorName.Equals(string.Empty))
 			{
@@ -174,9 +144,9 @@ namespace ACT_FFXIV_Aetherbridge
 				return currentPlayer;
 			}
 
-			if (actorName.ToUpper().Equals(YouLocalized))
+			if (actorName.ToUpper().Equals(Context.YouLocalized))
 			{
-				LogLineEvent.LogMessage = LogLineEvent.LogMessage.Remove(0, YouLocalized.Length);
+				LogLineEvent.LogMessage = LogLineEvent.LogMessage.Remove(0, Context.YouLocalized.Length);
 				LogLineEvent.LogMessage = currentPlayer.Name + LogLineEvent.LogMessage;
 				return currentPlayer;
 			}
@@ -188,12 +158,12 @@ namespace ACT_FFXIV_Aetherbridge
 
 		protected bool IsFalsePositive()
 		{
-			return LootFalsePositives.Any(falsePositive => LogLineEvent.LogMessage.Contains(falsePositive));
+			return Context.LootFalsePositives.Any(falsePositive => LogLineEvent.LogMessage.Contains(falsePositive));
 		}
 
 		protected bool IsAddLoot()
 		{
-			var match = ItemAddedRegex.Match(LogLineEvent.LogMessage);
+			var match = Context.ItemAddedRegex.Match(LogLineEvent.LogMessage);
 			if (match.Success)
 				LogLineEvent.XIVEvent = new XIVEvent(XIVEventTypeEnum.Loot, XIVEventSubTypeEnum.AddLoot)
 				{
@@ -205,7 +175,7 @@ namespace ACT_FFXIV_Aetherbridge
 
 		protected bool IsLostLoot()
 		{
-			var match = UnableToObtainRegex.Match(LogLineEvent.LogMessage);
+			var match = Context.UnableToObtainRegex.Match(LogLineEvent.LogMessage);
 			if (match.Success)
 				LogLineEvent.XIVEvent = new XIVEvent(XIVEventTypeEnum.Loot, XIVEventSubTypeEnum.LostLoot)
 				{
@@ -217,7 +187,7 @@ namespace ACT_FFXIV_Aetherbridge
 
 		protected bool IsObtainMostRareLoot()
 		{
-			var match = ObtainWithMostRareRegex.Match(LogLineEvent.LogMessage);
+			var match = Context.ObtainWithMostRareRegex.Match(LogLineEvent.LogMessage);
 			if (match.Success)
 			{
 				LogLineEvent.XIVEvent = new XIVEvent(XIVEventTypeEnum.Loot, XIVEventSubTypeEnum.ObtainLoot)
@@ -233,7 +203,7 @@ namespace ACT_FFXIV_Aetherbridge
 
 		protected virtual bool IsObtainLoot()
 		{
-			var match = ObtainRegex.Match(LogLineEvent.LogMessage);
+			var match = Context.ObtainRegex.Match(LogLineEvent.LogMessage);
 			if (match.Success)
 			{
 				LogLineEvent.XIVEvent = new XIVEvent(XIVEventTypeEnum.Loot, XIVEventSubTypeEnum.ObtainLoot)
@@ -249,7 +219,7 @@ namespace ACT_FFXIV_Aetherbridge
 
 		protected bool IsGreedLoot()
 		{
-			var match = GreedRegex.Match(LogLineEvent.LogMessage);
+			var match = Context.GreedRegex.Match(LogLineEvent.LogMessage);
 			if (match.Success)
 			{
 				LogLineEvent.XIVEvent = new XIVEvent(XIVEventTypeEnum.Loot, XIVEventSubTypeEnum.GreedLoot)
@@ -266,7 +236,7 @@ namespace ACT_FFXIV_Aetherbridge
 
 		protected bool IsNeedLost()
 		{
-			var match = NeedRegex.Match(LogLineEvent.LogMessage);
+			var match = Context.NeedRegex.Match(LogLineEvent.LogMessage);
 			if (match.Success)
 			{
 				LogLineEvent.XIVEvent = new XIVEvent(XIVEventTypeEnum.Loot, XIVEventSubTypeEnum.NeedLoot)

@@ -10,7 +10,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 		private static readonly object Lock = new object();
 		private static IACTWrapper _actWrapper;
 		private static IFFXIVACTPluginWrapper _ffxivACTPluginWrapper;
-		internal readonly ILogLineParser LogLineParser;
+		internal ILogLineParserFactory LogLineParserFactory;
 
 		private AetherbridgeMock(Language language)
 		{
@@ -32,7 +32,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			var itemRepository = new GameDataRepository<FFXIV.CrescentCove.Item>(gameDataManager.Item);
 			ItemService = new ItemService(LanguageService, itemRepository);
 			PlayerService = new PlayerService(_actWrapper, _ffxivACTPluginWrapper, WorldService, ClassJobService);
-			LogLineParser = new ENLogLineParser(this);
+			LogLineParserFactory = new ENLogLineParserFactory(this);
 		}
 
 		public Language CurrentLanguage { get; set; }

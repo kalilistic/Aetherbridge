@@ -15,7 +15,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			_aetherbridge = (AetherbridgeMock) AetherbridgeMock.GetInstance(language);
 			_aetherbridge.LanguageService.UpdateCurrentLanguage(language);
 			_aetherbridge.AddLanguage(language);
-			_parser = new FRLogLineParser(_aetherbridge);
+			_parser = new FRLogLineParser(new FRLogLineParserContext(_aetherbridge));
 		}
 
 		[OneTimeTearDown]

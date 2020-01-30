@@ -47,13 +47,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aetherbridge.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserFactory\JALogLineParserFactory.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserFactory\FRLogLineParserFactory.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserFactory\DELogLineParserFactory.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserFactory\ENLogLineParserFactory.cs" />
     <Compile Include="FFXIV_ACT_Plugin\IFFXIVACTPluginWrapper.cs" />
-    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\JALogLineParser.cs" />
-    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\FRLogLineParser.cs" />
-    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\DELogLineParser.cs" />
-    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserBase.cs" />
-    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\ENLogLineParser.cs" />
-    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\ILogLineParser.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserFactory\ILogLineParserFactory.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserContext\JALogLineParserContext.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserContext\DELogLineParserContext.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserContext\FRLogLineParserContext.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserContext\ENLogLineParserContext.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParser\ENLogLineParser.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserUtil.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserContext\ILogLineParserContext.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserContext\LogLineParserContextBase.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParser\JALogLineParser.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParser\FRLogLineParser.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParser\DELogLineParser.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParser\LogLineParserBase.cs" />
+    <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParser\ILogLineParser.cs" />
     <Compile Include="IAetherbridge.cs" />
     <Compile Include="Model\AetherbridgeConfig.cs" />
     <Compile Include="Model\Content.cs" />

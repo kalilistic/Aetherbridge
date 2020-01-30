@@ -7,14 +7,15 @@ namespace ACT_FFXIV_Aetherbridge
 {
 	public class LocationService
 	{
+		private readonly IFFXIVACTPluginWrapper _ffxivACTPluginWrapper;
 		private readonly LanguageService _languageService;
 		private readonly IGameDataRepository<Map> _mapRepository;
 		private readonly IGameDataRepository<FFXIV.CrescentCove.PlaceName> _placeNameRepository;
 		private readonly IGameDataRepository<TerritoryType> _territoryTypeRepository;
-		private readonly IFFXIVACTPluginWrapper _ffxivACTPluginWrapper;
 		private List<List<Location>> _locations = new List<List<Location>>();
 
-		public LocationService(LanguageService languageService, IGameDataManager gameDataManager, IFFXIVACTPluginWrapper ffxivACTPluginWrapper)
+		public LocationService(LanguageService languageService, IGameDataManager gameDataManager,
+			IFFXIVACTPluginWrapper ffxivACTPluginWrapper)
 		{
 			_languageService = languageService;
 
