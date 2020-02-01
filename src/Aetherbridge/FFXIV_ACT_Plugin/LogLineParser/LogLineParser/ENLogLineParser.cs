@@ -16,8 +16,8 @@
 		public override Item FindItem(string itemName, int quantity)
 		{
 			return quantity > 1
-				? Context.Aetherbridge.ItemService.GetItemByPluralKeyword(itemName)
-				: Context.Aetherbridge.ItemService.GetItemBySingularKeyword(itemName);
+				? Context.Aetherbridge.ItemService.GetItemByPluralSearchTerm(itemName)
+				: Context.Aetherbridge.ItemService.GetItemBySingularSearchTerm(itemName);
 		}
 
 		public override void NormalizeObtainWithMostRare()
