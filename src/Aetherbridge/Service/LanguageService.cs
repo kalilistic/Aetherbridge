@@ -47,14 +47,14 @@ namespace ACT_FFXIV_Aetherbridge
 
 		public static Language MapToLanguage(FFXIV.CrescentCove.Language gameDataLanguage)
 		{
-			return gameDataLanguage == null ? null : new Language(gameDataLanguage.Id, gameDataLanguage.Name);
+			return gameDataLanguage == null ? null : new Language(gameDataLanguage.Id, gameDataLanguage.Name, gameDataLanguage.Abbreviation);
 		}
 
 		public Language MapToLanguage(FFXIV_ACT_Plugin.Common.Language pluginLanguage)
 		{
 			var languageId = (int) pluginLanguage;
 			if (languageId == 0 || languageId > 4) languageId = 1;
-			return new Language(languageId, pluginLanguage.ToString());
+			return GetLanguageById(languageId);
 		}
 
 		public Language GetCurrentLanguage()

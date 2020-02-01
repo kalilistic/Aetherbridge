@@ -12,7 +12,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 		public void TestInitialize()
 		{
 			var plugin = new FFXIVACTPluginWrapperMock();
-			var language = new Language(1, "English");
+			var language = new Language(1, "English", "en");
 			var gameDataManager = new GameDataManager();
 			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
 			var languageService = new LanguageService(languageRepository, plugin);

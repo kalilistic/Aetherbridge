@@ -16,7 +16,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 		{
 			_actWrapper = new ACTWrapperMock();
 			_ffxivACTPluginWrapper = new FFXIVACTPluginWrapperMock();
-			CurrentLanguage = language ?? new Language(1, "English");
+			CurrentLanguage = language ?? new Language(1, "English", "en");
 			var gameDataManager = new GameDataManager();
 			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
 			LanguageService = new LanguageService(languageRepository, _ffxivACTPluginWrapper);

@@ -11,7 +11,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 		[OneTimeSetUp]
 		public void SetUp()
 		{
-			var language = new Language(2, "French");
+			var language = new Language(2, "French", "fr");
 			_aetherbridge = (AetherbridgeMock) AetherbridgeMock.GetInstance(language);
 			_aetherbridge.LanguageService.UpdateCurrentLanguage(language);
 			_aetherbridge.AddLanguage(language);

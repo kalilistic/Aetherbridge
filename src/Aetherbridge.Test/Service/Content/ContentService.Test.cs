@@ -12,7 +12,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 		public void TestInitialize()
 		{
 			var aetherbridge = (AetherbridgeMock) AetherbridgeMock.GetInstance();
-			var language = new Language(1, "English");
+			var language = new Language(1, "English", "en");
 			aetherbridge.CurrentLanguage = language;
 			var gameDataManager = new GameDataManager();
 			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
