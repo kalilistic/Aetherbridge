@@ -15,7 +15,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			var language = new Language(1, "English", "en");
 			var gameDataManager = new GameDataManager();
 			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
-			var languageService = new LanguageService(languageRepository, plugin);
+			var languageService = new LanguageService(languageRepository, plugin, new AetherbridgeConfig());
 			_locationService = new LocationService(languageService, gameDataManager, new FFXIVACTPluginWrapperMock());
 			_locationService.AddLanguage(language);
 		}

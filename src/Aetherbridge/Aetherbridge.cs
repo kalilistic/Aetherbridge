@@ -13,9 +13,9 @@ namespace ACT_FFXIV_Aetherbridge
 
 		private Aetherbridge()
 		{
+			AetherbridgeConfig = new AetherbridgeConfig();
 			InitWrappers();
 			InitGameData();
-			AetherbridgeConfig = new AetherbridgeConfig();
 		}
 
 		public ClassJobService ClassJobService { get; set; }
@@ -27,8 +27,9 @@ namespace ACT_FFXIV_Aetherbridge
 		public PlayerService PlayerService { get; set; }
 		public AetherbridgeConfig AetherbridgeConfig { get; set; }
 
-		public void AddLanguage(Language language)
+		public void AddLanguage(int languageId)
 		{
+			var language = LanguageService.GetLanguageById(languageId);
 			ClassJobService.AddLanguage(language);
 			LocationService.AddLanguage(language);
 			ContentService.AddLanguage(language);
@@ -42,7 +43,7 @@ namespace ACT_FFXIV_Aetherbridge
 		{
 			var gameDataManager = new GameDataManager();
 			var languageRepository = new GameDataRepository<FFXIV.CrescentCove.Language>(gameDataManager.Language);
-			LanguageService = new LanguageService(languageRepository, _ffxivACTPluginWrapper);
+			LanguageService = new LanguageService(languageRepository, _ffxivACTPluginWrapper, AetherbridgeConfig);
 			var worldRepository = new GameDataRepository<FFXIV.CrescentCove.World>(gameDataManager.World);
 			WorldService = new WorldService(worldRepository);
 			var classJobRepository = new GameDataRepository<FFXIV.CrescentCove.ClassJob>(gameDataManager.ClassJob);
@@ -55,7 +56,6 @@ namespace ACT_FFXIV_Aetherbridge
 			var itemRepository = new GameDataRepository<FFXIV.CrescentCove.Item>(gameDataManager.Item);
 			ItemService = new ItemService(LanguageService, itemRepository);
 			PlayerService = new PlayerService(_actWrapper, _ffxivACTPluginWrapper, WorldService, ClassJobService);
-			AddLanguage(LanguageService.GetCurrentLanguage());
 		}
 
 		public void Initialize()

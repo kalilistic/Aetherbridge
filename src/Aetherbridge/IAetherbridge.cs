@@ -4,17 +4,20 @@ namespace ACT_FFXIV_Aetherbridge
 {
 	public interface IAetherbridge
 	{
-		ClassJobService ClassJobService { get; }
-		WorldService WorldService { get; }
-		LocationService LocationService { get; }
-		ContentService ContentService { get; }
-		ItemService ItemService { get; }
+		ClassJobService ClassJobService { get; set; }
+		WorldService WorldService { get; set; }
+		LocationService LocationService { get; set; }
+		ContentService ContentService { get; set; }
+		ItemService ItemService { get; set; }
 		LanguageService LanguageService { get; set; }
 		PlayerService PlayerService { get; set; }
 		AetherbridgeConfig AetherbridgeConfig { get; set; }
 		event EventHandler<LogLineEvent> LogLineCaptured;
 		void InitGameData();
 		void Initialize();
-		void AddLanguage(Language language);
+		void AddLanguage(int languageId);
+		void DeInit();
+		void EnableLogLineParser();
+		void InitLogLineParser();
 	}
 }
