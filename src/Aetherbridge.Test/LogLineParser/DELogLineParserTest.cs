@@ -38,7 +38,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			Assert.AreEqual("17:41:23.000", logEvent.Timestamp);
 			Assert.AreEqual("Ihr habt Beutegut (eine YoRHa-Haube des Spähens Modell Nr. 51) erhalten.",
 				logEvent.LogMessage);
-			Assert.AreEqual("YoRHa-Haube des Spähens Modell Nr. 51", lootEvent.Item.SingularName);
+			Assert.AreEqual("YoRHa-Haube[p] des Spähens Modell Nr. 51", lootEvent.Item.SingularName);
 			Assert.AreEqual(1, lootEvent.Item.Quantity);
 			Assert.AreEqual(false, lootEvent.Item.IsHQ);
 		}
@@ -75,7 +75,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			Assert.AreEqual("23:03:55.000", logEvent.Timestamp);
 			Assert.AreEqual("Combatant One würfelt mit „Gier“ eine 28 auf die Notenrolle von „Alien Manifestation“.",
 				logEvent.LogMessage);
-			Assert.AreEqual("Notenrolle von „Alien Manifestation“", lootEvent.Item.SingularName);
+			Assert.AreEqual("Notenrolle[p] von „Alien Manifestation“", lootEvent.Item.SingularName);
 			Assert.AreEqual(1, lootEvent.Item.Quantity);
 			Assert.AreEqual(false, lootEvent.Item.IsHQ);
 		}
@@ -94,7 +94,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			Assert.AreEqual("23:13:29.000", logEvent.Timestamp);
 			Assert.AreEqual("Du konntest die YoRHa-Jacke des Spähens Modell Nr. 51 nicht erhalten.",
 				logEvent.LogMessage);
-			Assert.AreEqual("YoRHa-Jacke des Spähens Modell Nr. 51", lootEvent.Item.SingularName);
+			Assert.AreEqual("YoRHa-Jacke[p] des Spähens Modell Nr. 51", lootEvent.Item.SingularName);
 			Assert.AreEqual(1, lootEvent.Item.Quantity);
 			Assert.AreEqual(false, lootEvent.Item.IsHQ);
 		}
@@ -148,7 +148,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			Assert.AreEqual("23:12:36.000", logEvent.Timestamp);
 			Assert.AreEqual("Combatant One würfelt mit „Bedarf“ eine 28 auf die Notenrolle von „Alien Manifestation“.",
 				logEvent.LogMessage);
-			Assert.AreEqual("Notenrolle von „Alien Manifestation“", lootEvent.Item.SingularName);
+			Assert.AreEqual("Notenrolle[p] von „Alien Manifestation“", lootEvent.Item.SingularName);
 			Assert.AreEqual(1, lootEvent.Item.Quantity);
 			Assert.AreEqual(false, lootEvent.Item.IsHQ);
 		}
@@ -156,7 +156,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 		[Test]
 		public void Parse_LogLine_ObtainsLoot_BadItem()
 		{
-			const string logLine = @"[20:30:25.000] 00:0839:Du hast 1.000 Gills erhalten.";
+			const string logLine = @"[20:30:25.000] 00:0839:Du hast 1.000 gil-fake-item erhalten.";
 			var logEvent = _parser.Parse(new ACTLogLineEvent {LogLine = logLine});
 			Assert.IsNotNull(logEvent.Id);
 			Assert.IsNull(logEvent.XIVEvent);
@@ -194,7 +194,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			Assert.AreEqual("083e", logEvent.GameLogCode);
 			Assert.AreEqual("21:56:57.000", logEvent.Timestamp);
 			Assert.AreEqual("Combatant One hat Sammlersinn-Materia VII.", logEvent.LogMessage);
-			Assert.AreEqual("Sammlersinn-Materia VII", lootEvent.Item.SingularName);
+			Assert.AreEqual("Sammlersinn-Materia[p] VII", lootEvent.Item.SingularName);
 			Assert.AreEqual(1, lootEvent.Item.Quantity);
 			Assert.AreEqual(false, lootEvent.Item.IsHQ);
 			Assert.AreEqual("Combatant One", lootEvent.Actor.Name);
@@ -213,7 +213,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			Assert.AreEqual("083e", logEvent.GameLogCode);
 			Assert.AreEqual("16:35:53.000", logEvent.Timestamp);
 			Assert.AreEqual("Combatant One hat 2 Töpfe dunkelgrünen Farbstoffs.", logEvent.LogMessage);
-			Assert.AreEqual("Topf dunkelgrünen Farbstoffs", lootEvent.Item.SingularName);
+			Assert.AreEqual("Topf[p] dunkelgrünen Farbstoffs", lootEvent.Item.SingularName);
 			Assert.AreEqual(2, lootEvent.Item.Quantity);
 			Assert.AreEqual(false, lootEvent.Item.IsHQ);
 			Assert.AreEqual("Combatant One", lootEvent.Actor.Name);
@@ -233,7 +233,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			Assert.AreEqual("17:37:35.000", logEvent.Timestamp);
 			Assert.AreEqual("John Gilgamesh hat ein Paar YoRHa-Handschuhe der Heilung Modell Nr. 51 erhalten.",
 				logEvent.LogMessage);
-			Assert.AreEqual("Paar YoRHa-Handschuhe der Heilung Modell Nr. 51", lootEvent.Item.PluralName);
+			Assert.AreEqual("Paar[p] YoRHa-Handschuhe der Heilung Modell Nr. 51", lootEvent.Item.PluralName);
 			Assert.AreEqual(1, lootEvent.Item.Quantity);
 			Assert.AreEqual(false, lootEvent.Item.IsHQ);
 			Assert.AreEqual("John Gilgamesh", lootEvent.Actor.Name);
@@ -306,7 +306,7 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			Assert.AreEqual("083e", logEvent.GameLogCode);
 			Assert.AreEqual("21:23:42.000", logEvent.Timestamp);
 			Assert.AreEqual("Combatant One hat 20 Allagische Steine der Goëtie erhalten.", logEvent.LogMessage);
-			Assert.AreEqual("Allagisch Steine der Goëtie", lootEvent.Item.PluralName);
+			Assert.AreEqual("Allagisch[a] Steine[p] der Goëtie", lootEvent.Item.PluralName);
 			Assert.AreEqual(20, lootEvent.Item.Quantity);
 			Assert.AreEqual(false, lootEvent.Item.IsHQ);
 			Assert.AreEqual("Combatant One", lootEvent.Actor.Name);

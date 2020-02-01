@@ -12,9 +12,11 @@ namespace ACT_FFXIV_Aetherbridge
 		public bool IsHQ { get; set; }
 		public bool IsCommon { get; set; }
 		public bool IsRetired { get; set; }
-		internal string SingularNameKeyword { get; set; }
-		internal Regex SingularNameRegex { get; set; }
-		internal string PluralNameKeyword { get; set; }
-		internal Regex PluralNameRegex { get; set; }
+		internal string SingularSearchTerm { get; set; }
+		internal string PluralSearchTerm { get; set; }
+		internal string SingularREP { get; set; }
+		internal string PluralREP { get; set; }
+		internal Regex SingularRegex { get; set; }
+		internal Regex PluralRegex { get; set; }
 	}
 }

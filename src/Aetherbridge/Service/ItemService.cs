@@ -38,6 +38,15 @@ namespace ACT_FFXIV_Aetherbridge
 				_itemNames[language.Index].Add(item.ProperName);
 				if (item.IsCommon) _commonItemNames[language.Index].Add(item.ProperName);
 			}
+
+			if (language.Id == 3)
+			{
+				foreach (var item in _items[language.Index])
+				{
+					item.SingularRegex = new Regex(item.SingularREP, RegexOptions.Compiled);
+					item.PluralRegex = new Regex(item.PluralREP, RegexOptions.Compiled);
+				}
+			}
 		}
 
 		public Item GetItemById(int id)
@@ -59,32 +68,48 @@ namespace ACT_FFXIV_Aetherbridge
 			return item;
 		}
 
-		public Item GetItemBySingularKeyword(string singularName)
+		public Item GetItemBySingularSearchTerm(string singularName)
 		{
 			var languageIndex = _languageService.GetCurrentLanguage().Index;
-			var item = _items[languageIndex].FirstOrDefault(i => i.SingularNameKeyword.Equals(singularName));
+			var item = _items[languageIndex].FirstOrDefault(i => i.SingularSearchTerm.Equals(singularName));
 			return item;
 		}
 
-		public Item GetItemByPluralKeyword(string pluralName)
+		public Item GetItemByPluralSearchTerm(string pluralName)
 		{
 			var languageIndex = _languageService.GetCurrentLanguage().Index;
-			var item = _items[languageIndex].FirstOrDefault(i => i.PluralNameKeyword.Equals(pluralName));
+			var item = _items[languageIndex].FirstOrDefault(i => i.PluralSearchTerm.Equals(pluralName));
 			return item;
 		}
 
-		public Item GetItemBySingularRegex(string singularName)
+		public Item GetItemBySingularSearchTermDE(string singularName)
 		{
 			var languageIndex = _languageService.GetCurrentLanguage().Index;
-			var item = _items[languageIndex].FirstOrDefault(i => i.SingularNameRegex.Match(singularName).Success);
-			return item;
+			var items = _items[languageIndex].FindAll(i => singularName.StartsWith(i.SingularSearchTerm));
+			switch (items.Count)
+			{
+				case 0:
+					return null;
+				case 1:
+					return items[0];
+			}
+
+			return items.FirstOrDefault(item => item.SingularRegex.Match(singularName).Success);
 		}
 
-		public Item GetItemByPluralRegex(string pluralName)
+		public Item GetItemByPluralSearchTermDE(string pluralName)
 		{
 			var languageIndex = _languageService.GetCurrentLanguage().Index;
-			var item = _items[languageIndex].FirstOrDefault(i => i.PluralNameRegex.Match(pluralName).Success);
-			return item;
+			var items = _items[languageIndex].FindAll(i => pluralName.StartsWith(i.PluralSearchTerm));
+			switch (items.Count)
+			{
+				case 0:
+					return null;
+				case 1:
+					return items[0];
+			}
+
+			return items.FirstOrDefault(item => item.PluralRegex.Match(pluralName).Success);
 		}
 
 		public List<string> GetItemNames()
@@ -117,11 +142,11 @@ namespace ACT_FFXIV_Aetherbridge
 				Id = item.Id,
 				ProperName = item.Localized[language.Index].ProperName,
 				SingularName = item.Localized[language.Index].SingularName,
-				SingularNameKeyword = item.Localized[language.Index].SingularNameKeyword,
-				SingularNameRegex = new Regex(item.Localized[language.Index].SingularNameREP, RegexOptions.Compiled),
 				PluralName = item.Localized[language.Index].PluralName,
-				PluralNameKeyword = item.Localized[language.Index].PluralNameKeyword,
-				PluralNameRegex = new Regex(item.Localized[language.Index].PluralNameREP, RegexOptions.Compiled),
+				SingularSearchTerm = item.Localized[language.Index].SingularSearchTerm,
+				PluralSearchTerm = item.Localized[language.Index].PluralSearchTerm,
+				SingularREP = item.Localized[language.Index].SingularREP,
+				PluralREP = item.Localized[language.Index].PluralREP,
 				IsCommon = item.IsCommon
 			};
 		}
