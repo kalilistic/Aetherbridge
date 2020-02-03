@@ -5,16 +5,16 @@ namespace ACT_FFXIV_Aetherbridge.Test
 	[TestFixture]
 	public class ENLogLineParserTest
 	{
-		private AetherbridgeMock _aetherbridge;
+		private IAetherbridge _aetherbridge;
 		private ILogLineParser _parser;
 
 		[OneTimeSetUp]
 		public void SetUp()
 		{
-			var language = new Language(1, "English");
-			_aetherbridge = (AetherbridgeMock) AetherbridgeMock.GetInstance(language);
-			_aetherbridge.LanguageService.UpdateCurrentLanguage(language);
-			_aetherbridge.AddLanguage(language);
+			var language = new Language(1, "English", "en");
+			_aetherbridge = AetherbridgeMock.GetInstance();
+			_aetherbridge.AetherbridgeConfig.GameLanguageId = language.Id;
+			_aetherbridge.AddLanguage(language.Id);
 			_parser = new ENLogLineParser(new ENLogLineParserContext(_aetherbridge));
 		}
 

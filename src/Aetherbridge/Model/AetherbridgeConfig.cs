@@ -3,8 +3,6 @@
 	public class AetherbridgeConfig
 	{
 		public bool LogLineParserEnabled { get; set; } = false;
-		public bool ParseGameLogs { get; set; } = true;
-		public bool ParseLootEvents { get; set; } = true;
-		public Language CurrentLanguage { get; set; }
+		public int GameLanguageId { get; set; } = 0;
 	}
 }
