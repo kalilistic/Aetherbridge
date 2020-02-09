@@ -16,5 +16,10 @@ namespace ACT_FFXIV_Aetherbridge
 		public string LogCode { get; set; }
 		public string GameLogCode { get; set; }
 		public string LogMessage { get; set; }
+
+		public string GetMessageWithTimestamp()
+		{
+			return @"[" + Timestamp.Substring(0, 5) + @"] " + LogMessage;
+		}
 	}
 }

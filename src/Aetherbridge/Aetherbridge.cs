@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using FFXIV.CrescentCove;
 
 namespace ACT_FFXIV_Aetherbridge
@@ -104,8 +105,18 @@ namespace ACT_FFXIV_Aetherbridge
 		public void ACTLogLineCaptured(object sender, ACTLogLineEvent actLogLineEvent)
 		{
 			var logLineEvent = LogLineParserFactory.CreateParser().Parse(actLogLineEvent);
-			if (!actLogLineEvent.IsImport && logLineEvent?.XIVEvent != null)
+			if (!actLogLineEvent.IsImport && logLineEvent?.XIVEvent != null) {
 				logLineEvent.XIVEvent.Location = LocationService.GetCurrentLocation();
+				if (logLineEvent.XIVEvent.Actor != null)
+				{
+					var actor = PlayerService.GetPlayerByName(logLineEvent.XIVEvent.Actor.Name);
+					if (actor != null)
+					{
+						actor.IsReporter = logLineEvent.XIVEvent.Actor.IsReporter;
+						logLineEvent.XIVEvent.Actor = actor;
+					}
+				}
+			}
 			LogLineCaptured?.Invoke(this, logLineEvent);
 		}
 

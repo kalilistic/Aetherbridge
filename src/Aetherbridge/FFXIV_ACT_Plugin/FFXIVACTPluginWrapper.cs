@@ -40,21 +40,22 @@ namespace ACT_FFXIV_Aetherbridge
 
 		public List<Combatant> GetPartyCombatants()
 		{
-			return _dataRepository?.GetCombatantList()?
-					.Where(combatant => combatant.PartyType == FFXIV_ACT_Plugin.Common.Models.PartyTypeEnum.Party) as
+			return _dataRepository?.GetCombatantList()?.ToList()
+				.Where(combatant => combatant?.Name != null && combatant.PartyType == FFXIV_ACT_Plugin.Common.Models.PartyTypeEnum.Party) as
 				List<Combatant>;
 		}
 
 		public List<Combatant> GetAllianceCombatants()
 		{
 			return _dataRepository?.GetCombatantList()?
-					.Where(combatant => combatant.PartyType == FFXIV_ACT_Plugin.Common.Models.PartyTypeEnum.Alliance) as
+					.Where(combatant => combatant?.Name != null && combatant.PartyType == FFXIV_ACT_Plugin.Common.Models.PartyTypeEnum.Alliance) as
 				List<Combatant>;
 		}
 
 		public Combatant GetCombatantByName(string name)
 		{
-			return _dataRepository?.GetCombatantList()?.First(combatant => combatant.Name.Equals(name));
+			return _dataRepository?.GetCombatantList()?.ToList()
+				.FirstOrDefault(combatant => combatant?.Name != null && combatant.Name.Equals(name));
 		}
 
 		public List<Zone> GetZoneList()
