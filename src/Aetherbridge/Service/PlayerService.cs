@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using FFXIV_ACT_Plugin.Common.Models;
 
 namespace ACT_FFXIV_Aetherbridge
@@ -75,15 +76,8 @@ namespace ACT_FFXIV_Aetherbridge
 
 		public Player GetPlayerByName(string name)
 		{
-			try
-			{
-				var combatant = _ffxivACTPluginWrapper.GetCombatantByName(name);
-				return MapToPlayer(combatant);
-			}
-			catch (Exception)
-			{
-				return new Player {Name = ACTWrapper.GetInstance().GetCharacterName()};
-			}
+			var combatant = _ffxivACTPluginWrapper.GetCombatantByName(name);
+			return combatant == null ? null : MapToPlayer(combatant);
 		}
 	}
 }
