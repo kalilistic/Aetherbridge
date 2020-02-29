@@ -289,5 +289,41 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			Assert.AreEqual(false, lootEvent.Item.IsHQ);
 			Assert.AreEqual("Combatant One", lootEvent.Actor.Name);
 		}
+
+		[Test]
+		public void Parse_LogLine_ClaimLoot_YouClaim()
+		{
+			const string logLine = @"[16:35:53.000] 00:083e:Combatant Oneにエーテリアル・ウールサッシュが分配されました。";
+			var logEvent = _parser.Parse(new ACTLogLineEvent {LogLine = logLine});
+			var lootEvent = logEvent.XIVEvent;
+			Assert.IsNotNull(logEvent.Id);
+			Assert.IsNotNull(logEvent.XIVEvent);
+			Assert.AreEqual("00", logEvent.LogCode);
+			Assert.AreEqual("083e", logEvent.GameLogCode);
+			Assert.AreEqual("16:35:53.000", logEvent.Timestamp);
+			Assert.AreEqual("Combatant Oneにエーテリアル・ウールサッシュが分配されました。", logEvent.LogMessage);
+			Assert.AreEqual("エーテリアル・ウールサッシュ", lootEvent.Item.SingularName);
+			Assert.AreEqual(1, lootEvent.Item.Quantity);
+			Assert.AreEqual(false, lootEvent.Item.IsHQ);
+			Assert.AreEqual("Combatant One", lootEvent.Actor.Name);
+		}
+
+		[Test]
+		public void Parse_LogLine_ClaimLoot_TheyClaim()
+		{
+			const string logLine = @"[16:35:53.000] 00:103e:Blue Zooにエーテリアル・ウールローブが分配されました。";
+			var logEvent = _parser.Parse(new ACTLogLineEvent {LogLine = logLine});
+			var lootEvent = logEvent.XIVEvent;
+			Assert.IsNotNull(logEvent.Id);
+			Assert.IsNotNull(logEvent.XIVEvent);
+			Assert.AreEqual("00", logEvent.LogCode);
+			Assert.AreEqual("103e", logEvent.GameLogCode);
+			Assert.AreEqual("16:35:53.000", logEvent.Timestamp);
+			Assert.AreEqual("Blue Zooにエーテリアル・ウールローブが分配されました。", logEvent.LogMessage);
+			Assert.AreEqual("エーテリアル・ウールローブ", lootEvent.Item.SingularName);
+			Assert.AreEqual(1, lootEvent.Item.Quantity);
+			Assert.AreEqual(false, lootEvent.Item.IsHQ);
+			Assert.AreEqual("Blue Zoo", lootEvent.Actor.Name);
+		}
 	}
 }

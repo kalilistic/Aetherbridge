@@ -8,7 +8,7 @@ namespace ACT_FFXIV_Aetherbridge
 		{
 			ObtainRegex =
 				LogLineParserUtil.CreateRegex(
-					@"^(?<ActorNameWithWorldName>[^\s]+ ?[^\s]+).+?(?:obtain(?:s)? )(?:the |an |a )?(?<RawItemName>.*?)\.");
+					@"^(?<ActorNameWithWorldName>[^\s]+ ?[^\s]+).+?(?:(obtain|claim)(?:s)? )(?:the |an |a )?(?<RawItemName>.*?)\.");
 			ObtainWithMostRareRegex =
 				LogLineParserUtil.CreateRegex(
 					@"^(?<ActorNameWithWorldName>[^\s]+ ?[^\s]+) discover and obtain (?:the |an |a )?(?<RawItemName>.*?)─(?:items|an item) most rare!");

@@ -7,7 +7,7 @@ namespace ACT_FFXIV_Aetherbridge
 		public JALogLineParserContext(IAetherbridge aetherbridge) : base(aetherbridge)
 		{
 			ObtainRegex =
-				LogLineParserUtil.CreateRegex(@"^(?<ActorNameWithWorldName>.+)は(?<RawItemName>.+)(?:を入手した|を手に入れた)。");
+				LogLineParserUtil.CreateRegex(@"^(?<ActorNameWithWorldName>.+)(は|に)(?<RawItemName>.+)(?:を入手した|を手に入れた|が分配されました)。");
 			ObtainWithMostRareRegex =
 				LogLineParserUtil.CreateRegex(@"^(?<ActorNameWithWorldName>.+)は希少なほりだしもの(?<RawItemName>.+)を入手した！");
 			UnableToObtainRegex = LogLineParserUtil.CreateRegex(@"^(?<RawItemName>.+)を手に入れることができなかった。");

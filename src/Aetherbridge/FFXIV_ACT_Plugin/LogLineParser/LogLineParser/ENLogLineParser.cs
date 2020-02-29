@@ -31,8 +31,9 @@
 
 		public override void NormalizeObtain()
 		{
-			if (LogLineEvent.XIVEvent.Actor.IsReporter)
-				LogLineEvent.LogMessage = LogLineEvent.LogMessage.Replace(" obtain ", " obtains ");
+			if (!LogLineEvent.XIVEvent.Actor.IsReporter) return;
+			LogLineEvent.LogMessage = LogLineEvent.LogMessage.Replace(" obtain ", " obtains ");
+			LogLineEvent.LogMessage = LogLineEvent.LogMessage.Replace(" claim ", " claims ");
 		}
 
 		public override void NormalizeRoll()
