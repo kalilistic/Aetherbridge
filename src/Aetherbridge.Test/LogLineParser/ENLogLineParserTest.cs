@@ -341,5 +341,24 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			Assert.AreEqual(false, lootEvent.Item.IsHQ);
 			Assert.AreEqual("Blue Zoo", lootEvent.Actor.Name);
 		}
+
+		[Test]
+		public void Parse_LogLine_ObtainsLoot_WithNumber()
+		{
+			const string logLine = @"[16:35:53.000] 00:103e:Blue Zoo obtains 4 grade 2 tinctures of vitality.";
+			var logEvent = _parser.Parse(new ACTLogLineEvent {LogLine = logLine});
+			var lootEvent = logEvent.XIVEvent;
+			Assert.IsNotNull(logEvent.Id);
+			Assert.IsNotNull(logEvent.XIVEvent);
+			Assert.AreEqual("00", logEvent.LogCode);
+			Assert.AreEqual("103e", logEvent.GameLogCode);
+			Assert.AreEqual("16:35:53.000", logEvent.Timestamp);
+			Assert.AreEqual("Blue Zoo obtains 4 grade 2 tinctures of vitality.", logEvent.LogMessage);
+			Assert.AreEqual("grade 2 tincture of vitality", lootEvent.Item.SingularName);
+			Assert.AreEqual(4, lootEvent.Item.Quantity);
+			Assert.AreEqual(false, lootEvent.Item.IsHQ);
+			Assert.AreEqual("Blue Zoo", lootEvent.Actor.Name);
+		}
+
 	}
 }

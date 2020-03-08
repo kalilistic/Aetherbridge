@@ -1,4 +1,6 @@
-﻿namespace ACT_FFXIV_Aetherbridge
+﻿using System.Text.RegularExpressions;
+
+namespace ACT_FFXIV_Aetherbridge
 {
 	internal class JALogLineParser : LogLineParserBase, ILogLineParser
 	{
@@ -57,13 +59,23 @@
 
 		protected override void ParseItemNameAndQuantity(DraftItem draftItem)
 		{
-			var match = Context.ItemQuantityRegex.Match(draftItem.RawItemName);
-			var quantityStr = match.Groups["Quantity"].Value.Replace(Context.NumberDelimiterLocalized, string.Empty);
+			const string gil = @"ギル";
+			const char currencyIndicator = '×';
+			string quantityStr;
+			if (draftItem.RawItemName.EndsWith(gil))
+			{
+				quantityStr = draftItem.RawItemName.Replace(gil, string.Empty);
+			}
+			else
+			{
+				var match = Context.ItemQuantityRegex.Match(draftItem.RawItemName);
+				quantityStr = match.Groups["Quantity"].Value;
+			}
 			try
 			{
-				draftItem.Quantity = int.Parse(quantityStr);
-				draftItem.ItemName = draftItem.RawItemName.Replace(match.Groups["Quantity"].Value, string.Empty);
-				if (draftItem.ItemName[draftItem.ItemName.Length - 1] == '×')
+				draftItem.Quantity = int.Parse(quantityStr.Replace(Context.NumberDelimiterLocalized, string.Empty));
+				draftItem.ItemName = draftItem.RawItemName.Replace(quantityStr, string.Empty);
+				if (draftItem.ItemName[draftItem.ItemName.Length - 1] == currencyIndicator)
 					draftItem.ItemName = draftItem.ItemName.Remove(draftItem.ItemName.Length - 1);
 			}
 			catch
