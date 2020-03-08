@@ -316,5 +316,23 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			Assert.AreEqual(false, lootEvent.Item.IsHQ);
 			Assert.AreEqual("Combatant One", lootEvent.Actor.Name);
 		}
+
+		[Test]
+		public void Parse_LogLine_ObtainsLoot_WithNumber()
+		{
+			const string logLine = @"[16:35:53.000] 00:103e:Purple Gr'eenJenova obtient une  coffre de bague des chœurs édéniques [NvObj 500].";
+			var logEvent = _parser.Parse(new ACTLogLineEvent {LogLine = logLine});
+			var lootEvent = logEvent.XIVEvent;
+			Assert.IsNotNull(logEvent.Id);
+			Assert.IsNotNull(logEvent.XIVEvent);
+			Assert.AreEqual("00", logEvent.LogCode);
+			Assert.AreEqual("103e", logEvent.GameLogCode);
+			Assert.AreEqual("16:35:53.000", logEvent.Timestamp);
+			Assert.AreEqual("Purple Gr'een obtient une coffre de bague des chœurs édéniques [NvObj 500].", logEvent.LogMessage);
+			Assert.AreEqual("coffre de bague des chœurs édéniques [NvObj 500]", lootEvent.Item.SingularName);
+			Assert.AreEqual(1, lootEvent.Item.Quantity);
+			Assert.AreEqual(false, lootEvent.Item.IsHQ);
+			Assert.AreEqual("Purple Gr'een", lootEvent.Actor.Name);
+		}
 	}
 }

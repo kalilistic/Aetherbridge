@@ -311,5 +311,23 @@ namespace ACT_FFXIV_Aetherbridge.Test
 			Assert.AreEqual(false, lootEvent.Item.IsHQ);
 			Assert.AreEqual("Combatant One", lootEvent.Actor.Name);
 		}
+
+		[Test]
+		public void Parse_LogLine_ObtainsLoot_WithNumber()
+		{
+			const string logLine = @"[16:35:53.000] 00:103e:Blue Zoo hat einen  Edenchor-Kiste mit Ausrüstung für die Füße (G.-St. 500) erhalten.";
+			var logEvent = _parser.Parse(new ACTLogLineEvent {LogLine = logLine});
+			var lootEvent = logEvent.XIVEvent;
+			Assert.IsNotNull(logEvent.Id);
+			Assert.IsNotNull(logEvent.XIVEvent);
+			Assert.AreEqual("00", logEvent.LogCode);
+			Assert.AreEqual("103e", logEvent.GameLogCode);
+			Assert.AreEqual("16:35:53.000", logEvent.Timestamp);
+			Assert.AreEqual("Blue Zoo hat einen Edenchor-Kiste mit Ausrüstung für die Füße (G.-St. 500) erhalten.", logEvent.LogMessage);
+			Assert.AreEqual("Edenchor-Kiste[p] mit Ausrüstung für die Füße (G.-St. 500)", lootEvent.Item.SingularName);
+			Assert.AreEqual(1, lootEvent.Item.Quantity);
+			Assert.AreEqual(false, lootEvent.Item.IsHQ);
+			Assert.AreEqual("Blue Zoo", lootEvent.Actor.Name);
+		}
 	}
 }

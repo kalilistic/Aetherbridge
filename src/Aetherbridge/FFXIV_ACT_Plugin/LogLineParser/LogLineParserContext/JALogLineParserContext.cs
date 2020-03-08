@@ -24,7 +24,7 @@ namespace ACT_FFXIV_Aetherbridge
 			LootFalsePositives = new List<string>();
 			NumberDelimiterLocalized = ",";
 			ObtainAltRegex = LogLineParserUtil.CreateRegex(@"^(?<RawItemName>.+)(?:を入手した|を手に入れた)。");
-			ItemQuantityRegex = LogLineParserUtil.CreateRegex(@"(?<Quantity>[0-9,]+)");
+			ItemQuantityRegex = LogLineParserUtil.CreateRegex(@"×(?<Quantity>[0-9,]+)");
 		}
 	}
 }
