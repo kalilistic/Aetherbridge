@@ -3,9 +3,9 @@ using System.Linq;
 using Advanced_Combat_Tracker;
 using static Advanced_Combat_Tracker.ActGlobals;
 
-namespace ACT_FFXIV_Aetherbridge
+namespace ACT_FFXIV.Aetherbridge
 {
-	internal sealed class ACTWrapper : IACTWrapper
+	public class ACTWrapper : IACTWrapper
 	{
 		private static volatile ACTWrapper _actWrapper;
 		private static readonly object Lock = new object();
@@ -15,7 +15,6 @@ namespace ACT_FFXIV_Aetherbridge
 			EnableOnLogLineRead();
 		}
 
-		internal bool OnLogLineReadEnabled { get; set; }
 		public bool ACTLogLineParserEnabled { get; set; }
 		public event EventHandler<ACTLogLineEvent> ACTLogLineCaptured;
 

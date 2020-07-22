@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ACT_FFXIV_Aetherbridge
+namespace ACT_FFXIV.Aetherbridge
 {
 	public class Location
 	{

@@ -1,8 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace ACT_FFXIV_Aetherbridge
+namespace ACT_FFXIV.Aetherbridge
 {
-	internal static class LogLineParserUtil
+	public static class LogLineParserUtil
 	{
 		public static Regex CreateRegex(string pattern)
 		{

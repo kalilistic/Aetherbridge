@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using FFXIV_ACT_Plugin.Common.Models;
 
-namespace ACT_FFXIV_Aetherbridge
+namespace ACT_FFXIV.Aetherbridge
 {
 	public interface IFFXIVACTPluginWrapper
 	{

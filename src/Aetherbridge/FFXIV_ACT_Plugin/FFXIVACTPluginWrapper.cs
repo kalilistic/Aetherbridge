@@ -3,9 +3,9 @@ using System.Linq;
 using FFXIV_ACT_Plugin.Common;
 using FFXIV_ACT_Plugin.Common.Models;
 
-namespace ACT_FFXIV_Aetherbridge
+namespace ACT_FFXIV.Aetherbridge
 {
-	internal sealed class FFXIVACTPluginWrapper : IFFXIVACTPluginWrapper
+	public class FFXIVACTPluginWrapper : IFFXIVACTPluginWrapper
 	{
 		private static volatile IFFXIVACTPluginWrapper _wrapper;
 		private static readonly object Lock = new object();
@@ -41,14 +41,18 @@ namespace ACT_FFXIV_Aetherbridge
 		public List<Combatant> GetPartyCombatants()
 		{
 			return _dataRepository?.GetCombatantList()?.ToList()
-				.Where(combatant => combatant?.Name != null && combatant.PartyType == FFXIV_ACT_Plugin.Common.Models.PartyTypeEnum.Party) as
+					.Where(combatant =>
+						combatant?.Name != null &&
+						combatant.PartyType == FFXIV_ACT_Plugin.Common.Models.PartyTypeEnum.Party) as
 				List<Combatant>;
 		}
 
 		public List<Combatant> GetAllianceCombatants()
 		{
 			return _dataRepository?.GetCombatantList()?
-					.Where(combatant => combatant?.Name != null && combatant.PartyType == FFXIV_ACT_Plugin.Common.Models.PartyTypeEnum.Alliance) as
+					.Where(combatant =>
+						combatant?.Name != null &&
+						combatant.PartyType == FFXIV_ACT_Plugin.Common.Models.PartyTypeEnum.Alliance) as
 				List<Combatant>;
 		}
 
