@@ -33,8 +33,8 @@ This is an evolving effort to extract common code from my ACT FFXIV Plugins.
 
 ## How To Update SaintCoinach Data
 1. Update config in ./scripts/game-data-config.bat.
-2. Open your Aetherbridge dir in command line.
-3. Run ./scripts/update-game-data.bat
+2. Open your Aetherbridge/scripts dir in command line.
+3. Run update-game-data.bat
 
 ## Considerations
 

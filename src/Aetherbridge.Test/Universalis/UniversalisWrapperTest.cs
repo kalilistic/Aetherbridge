@@ -56,5 +56,13 @@ namespace ACT_FFXIV.Aetherbridge.Test
 			var result2 = _wrapper.GetMarketBoard(63, 29436);
 			Assert.AreEqual(result1.LastCheckTime, result2.LastCheckTime);
 		}
+
+		[Test]
+		//[Ignore("Integration Test using real Universalis API")]
+		public void GetSummary_IT_ReturnsSummaryEmptyItem()
+		{
+			var result = _wrapper.GetMarketBoard(63, 6760);
+			Assert.NotNull(result.LastCheckTime);
+		}
 	}
 }

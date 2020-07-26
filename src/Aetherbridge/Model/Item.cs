@@ -10,6 +10,7 @@ namespace ACT_FFXIV.Aetherbridge
 		public string SingularName { get; set; }
 		public string PluralName { get; set; }
 		public bool IsUntradable { get; set; }
+		public bool IsMarketable { get; set; }
 		public int VendorBuyPrice { get; set; }
 		public int Quantity { get; set; }
 		public bool IsHQ { get; set; }

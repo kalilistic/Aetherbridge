@@ -40,7 +40,7 @@ item_action_dest = dest_dir + item_action_file_name + property_ext
 # Extract Columns
 class_job_cols = ["Key", "ClassJobCategory", "Role", "Name", "Abbreviation"]
 world_cols = ["Key", "Name"]
-item_cols = ["Key", "IsUntradable", "Price{Low}", "ItemAction", "Singular", "Plural", "Name"]
+item_cols = ["Key", "ItemSearchCategory", "IsUntradable", "Price{Low}", "ItemAction", "Singular", "Plural", "Name"]
 content_finder_condition_cols = ["Key", "TerritoryType", "HighEndDuty", "Name"]
 territory_type_cols = [
     "Key",

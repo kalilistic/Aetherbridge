@@ -71,7 +71,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="MarketBoard\UniversalisWrapperTest.cs" />
+    <Compile Include="Universalis\UniversalisWrapperTest.cs" />
     <Compile Include="Updater\ReleaseDownloaderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XIVData\GameDataManagerTest.cs" />

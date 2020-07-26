@@ -81,14 +81,14 @@
     <Compile Include="CustomControl\CustomTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="EventSource\EventSource.cs" />
-    <Compile Include="EventSource\OverlayPreset.cs" />
-    <Compile Include="EventSource\EventHandler.cs" />
-    <Compile Include="EventSource\EventSourceContext.cs" />
+    <Compile Include="OverlayPlugin\EventSource.cs" />
+    <Compile Include="OverlayPlugin\OverlayPreset.cs" />
+    <Compile Include="OverlayPlugin\EventHandler.cs" />
+    <Compile Include="OverlayPlugin\EventSourceContext.cs" />
     <Compile Include="FFXIV_ACT_Plugin\FFXIVACTPluginWrapper.cs" />
     <Compile Include="FFXIV_ACT_Plugin\IFFXIVACTPluginWrapper.cs" />
     <Compile Include="FFXIV_ACT_Plugin\LogLineParser\LogLineParserUtil.cs" />
-    <Compile Include="MarketBoard\IUniversalisWrapper.cs" />
+    <Compile Include="Universalis\IUniversalisWrapper.cs" />
     <Compile Include="Model\MarketBoard.cs" />
     <Compile Include="PluginLogger\IPluginLogger.cs" />
     <Compile Include="PluginLogger\PluginLogger.cs" />
@@ -118,7 +118,7 @@
     <Compile Include="DataService\LocationService.cs" />
     <Compile Include="DataService\PlayerService.cs" />
     <Compile Include="DataService\WorldService.cs" />
-    <Compile Include="MarketBoard\UniversalisWrapper.cs" />
+    <Compile Include="Universalis\UniversalisWrapper.cs" />
     <Compile Include="Updater\PluginUpdater.cs" />
     <Compile Include="Updater\ReleaseDownloaderSettings\IReleaseDownloaderSettings.cs" />
     <Compile Include="Updater\ReleaseDownloaderSettings\ReleaseDownloaderSettings.cs" />

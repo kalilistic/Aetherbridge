@@ -7,14 +7,14 @@ namespace ACT_FFXIV.Aetherbridge
 		public MarketBoard(dynamic json)
 		{
 			LastCheckTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-			LastUploadTime = json.lastUploadTime.Value;
-			ListingsCount = json.listings.Count;
-			SaleVelocity = json.regularSaleVelocity.Value;
-			SaleVelocityNQ = json.nqSaleVelocity.Value;
-			SaleVelocityHQ = json.hqSaleVelocity.Value;
-			AveragePrice = json.averagePrice.Value;
-			AveragePriceNQ = json.averagePriceNQ.Value;
-			AveragePriceHQ = json.averagePriceHQ.Value;
+			LastUploadTime = json.lastUploadTime?.Value;
+			ListingsCount = json.listings?.Count;
+			SaleVelocity = json.regularSaleVelocity?.Value;
+			SaleVelocityNQ = json.nqSaleVelocity?.Value;
+			SaleVelocityHQ = json.hqSaleVelocity?.Value;
+			AveragePrice = json.averagePrice?.Value;
+			AveragePriceNQ = json.averagePriceNQ?.Value;
+			AveragePriceHQ = json.averagePriceHQ?.Value;
 		}
 
 		public long LastCheckTime { get; set; }

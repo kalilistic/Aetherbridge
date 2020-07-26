@@ -8,64 +8,66 @@
 		public bool IsUntradable { get; set; }
 		public int VendorBuyPrice { get; set; }
 		public int ItemAction { get; set; }
+		public int ItemSearchCategory { get; set; }
 		public int Id { get; set; }
 
 		public void SetPropsByStr(string[] propertyStr)
 		{
 			Id = int.Parse(propertyStr[0]);
-			IsUntradable = bool.Parse(propertyStr[1]);
-			VendorBuyPrice = int.Parse(propertyStr[2]);
-			ItemAction = int.Parse(propertyStr[3]);
+			ItemSearchCategory = int.Parse(propertyStr[1]);
+			IsUntradable = bool.Parse(propertyStr[2]);
+			VendorBuyPrice = int.Parse(propertyStr[3]);
+			ItemAction = int.Parse(propertyStr[4]);
 			Localized = new[]
 			{
 				new ItemLocalized
 				{
 					Language = LanguageEnum.en,
-					SingularName = propertyStr[4],
-					PluralName = propertyStr[5],
-					ProperName = propertyStr[6],
-					SingularSearchTerm = propertyStr[7],
-					PluralSearchTerm = propertyStr[8],
-					SingularREP = propertyStr[9],
-					PluralREP = propertyStr[10]
+					SingularName = propertyStr[5],
+					PluralName = propertyStr[6],
+					ProperName = propertyStr[7],
+					SingularSearchTerm = propertyStr[8],
+					PluralSearchTerm = propertyStr[9],
+					SingularREP = propertyStr[10],
+					PluralREP = propertyStr[11]
 				},
 				new ItemLocalized
 				{
 					Language = LanguageEnum.fr,
-					SingularName = propertyStr[11],
-					PluralName = propertyStr[12],
-					ProperName = propertyStr[13],
-					SingularSearchTerm = propertyStr[14],
-					PluralSearchTerm = propertyStr[15],
-					SingularREP = propertyStr[16],
-					PluralREP = propertyStr[17]
+					SingularName = propertyStr[12],
+					PluralName = propertyStr[13],
+					ProperName = propertyStr[14],
+					SingularSearchTerm = propertyStr[15],
+					PluralSearchTerm = propertyStr[16],
+					SingularREP = propertyStr[17],
+					PluralREP = propertyStr[18]
 				},
 				new ItemLocalized
 				{
 					Language = LanguageEnum.de,
-					SingularName = propertyStr[18],
-					PluralName = propertyStr[19],
-					ProperName = propertyStr[20],
-					SingularSearchTerm = propertyStr[21],
-					PluralSearchTerm = propertyStr[22],
-					SingularREP = propertyStr[23],
-					PluralREP = propertyStr[24]
+					SingularName = propertyStr[19],
+					PluralName = propertyStr[20],
+					ProperName = propertyStr[21],
+					SingularSearchTerm = propertyStr[22],
+					PluralSearchTerm = propertyStr[23],
+					SingularREP = propertyStr[24],
+					PluralREP = propertyStr[25]
 				},
 				new ItemLocalized
 				{
 					Language = LanguageEnum.ja,
-					SingularName = propertyStr[25],
-					PluralName = propertyStr[26],
-					ProperName = propertyStr[27],
-					SingularSearchTerm = propertyStr[28],
-					PluralSearchTerm = propertyStr[29],
-					SingularREP = propertyStr[30],
-					PluralREP = propertyStr[31]
+					SingularName = propertyStr[26],
+					PluralName = propertyStr[27],
+					ProperName = propertyStr[28],
+					SingularSearchTerm = propertyStr[29],
+					PluralSearchTerm = propertyStr[30],
+					SingularREP = propertyStr[31],
+					PluralREP = propertyStr[32]
 				}
 			};
 
-			IsCommon = bool.Parse(propertyStr[32]);
-			IsRetired = bool.Parse(propertyStr[33]);
+			IsCommon = bool.Parse(propertyStr[33]);
+			IsRetired = bool.Parse(propertyStr[34]);
 		}
 	}
 }

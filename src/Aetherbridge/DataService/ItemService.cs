@@ -67,6 +67,12 @@ namespace ACT_FFXIV.Aetherbridge
 			return item;
 		}
 
+		public Item GetItemByProperName(string properName)
+		{
+			var item = _items.FirstOrDefault(i => i.ProperName.Equals(properName));
+			return item;
+		}
+
 		public Item GetItemBySingularSearchTerm(string singularName)
 		{
 			var item = _items.FirstOrDefault(i => i.SingularSearchTerm.Equals(singularName));
@@ -136,6 +142,7 @@ namespace ACT_FFXIV.Aetherbridge
 			{
 				Id = item.Id,
 				IsUntradable = item.IsUntradable,
+				IsMarketable = item.ItemSearchCategory != 0,
 				VendorBuyPrice = item.VendorBuyPrice,
 				ProperName = item.Localized[language.Index].ProperName,
 				SingularName = item.Localized[language.Index].SingularName,

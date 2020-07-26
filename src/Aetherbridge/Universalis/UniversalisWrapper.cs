@@ -53,7 +53,14 @@ namespace ACT_FFXIV.Aetherbridge
 			var json = JsonConvert.DeserializeObject<dynamic>(result.Content.ReadAsStringAsync().Result);
 			if (json == null) return null;
 			if (json.lastUploadTime.Value == 0) return null;
-			return new MarketBoard(json);
+			try
+			{
+				return new MarketBoard(json);
+			}
+			catch (Exception)
+			{
+				return null;
+			}
 		}
 
 		private static async Task<HttpResponseMessage> GetMarketBoardDataAsync(int worldId, int itemId)
