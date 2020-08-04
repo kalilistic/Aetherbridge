@@ -25,6 +25,11 @@ namespace ACT_FFXIV.Aetherbridge.Mocks
 			return "John Smith";
 		}
 
+		public void Restart(string message)
+		{
+			throw new NotImplementedException();
+		}
+
 		public bool ACTLogLineParserEnabled { get; set; }
 
 		protected virtual void OnACTLogLineCaptured(ACTLogLineEvent e)

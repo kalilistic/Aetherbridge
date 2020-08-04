@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using Advanced_Combat_Tracker;
 
 namespace ACT_FFXIV.Aetherbridge
 {
@@ -20,9 +19,7 @@ namespace ACT_FFXIV.Aetherbridge
 				var status = downloader.DownloadLatestRelease();
 				if (status)
 				{
-					var form = ActGlobals.oFormActMain;
-					var method = form.GetType().GetMethod("RestartACT");
-					if (method != null) method.Invoke(form, new object[] {true, settings.RestartMessage});
+					ACTWrapper.GetInstance().Restart(settings.RestartMessage);
 				}
 				else
 				{

@@ -46,6 +46,12 @@ namespace ACT_FFXIV.Aetherbridge
 			return charName;
 		}
 
+		public void Restart(string message)
+		{
+			var method = oFormActMain.GetType().GetMethod("RestartACT");
+			if (method != null) method.Invoke(oFormActMain, new object[] {true, message});
+		}
+
 		public void DeInit()
 		{
 			DisableOnLogLineRead();

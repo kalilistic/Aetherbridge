@@ -10,5 +10,6 @@ namespace ACT_FFXIV.Aetherbridge
 		void DeInit();
 		string GetAppDataFolderFullName();
 		string GetCharacterName();
+		void Restart(string message);
 	}
 }
