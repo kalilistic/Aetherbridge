@@ -56,19 +56,17 @@ namespace ACT_FFXIV.Aetherbridge
 
 			if (_context.OverlayPresets == null || _context.OverlayPresets.Count <= 0) return;
 			foreach (var overlayPreset in _context.OverlayPresets)
-				Registry.RegisterOverlayPreset(new NewOverlayDialog.OverlayPreset
+				Registry.RegisterOverlayPreset(new OverlayPreset
 				{
 					Name = _context.Name + " " + overlayPreset.Name,
 					Url = overlayPreset.Url,
-					Size = overlayPreset.Size,
-					Type = "MiniParse",
-					Supports = new List<string> {"modern"}
+					Size = overlayPreset.Size
 				});
 		}
 
 		public override Control CreateConfigControl()
 		{
-			return new Control();
+			return null;
 		}
 
 		public override void LoadConfig(IPluginConfig config)
@@ -77,7 +75,6 @@ namespace ACT_FFXIV.Aetherbridge
 
 		public override void SaveConfig(IPluginConfig config)
 		{
-			config.EventSourceConfigs[_context.Name] = JObject.FromObject(new { });
 		}
 
 		protected override void Update()
