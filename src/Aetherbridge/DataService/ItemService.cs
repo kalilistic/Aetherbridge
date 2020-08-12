@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using ACT_FFXIV.Aetherbridge.XIVData;
 using ACT_FFXIV.Aetherbridge.XIVData.Model;
+// ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 
 // ReSharper disable InvertIf
 namespace ACT_FFXIV.Aetherbridge
@@ -45,8 +46,22 @@ namespace ACT_FFXIV.Aetherbridge
 			if (language.Id == 3)
 				foreach (var item in _items)
 				{
-					item.SingularRegex = new Regex(item.SingularREP, RegexOptions.Compiled);
-					item.PluralRegex = new Regex(item.PluralREP, RegexOptions.Compiled);
+					if (!string.IsNullOrEmpty(item.SingularREP))
+					{
+						item.SingularRegex = new Regex(item.SingularREP, RegexOptions.Compiled);
+					}
+					else
+					{
+						item.SingularRegex = new Regex("^NO_GERMAN_LOCALIZATION", RegexOptions.Compiled);
+					}
+					if (!string.IsNullOrEmpty(item.PluralREP))
+					{
+						item.PluralRegex = new Regex(item.PluralREP, RegexOptions.Compiled);
+					}
+					else
+					{
+						item.PluralRegex = new Regex("^NO_GERMAN_LOCALIZATION", RegexOptions.Compiled);
+					}
 				}
 		}
 

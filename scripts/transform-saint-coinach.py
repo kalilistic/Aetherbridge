@@ -153,7 +153,6 @@ def create_item_df(lang):
     df = df.drop([0, 0])
     df = remove_unused_cols(df, item_cols)
     df["SingularSearchTerm"] = ""
-    df["SingularSearchTerm"] = ""
     df["PluralSearchTerm"] = ""
     df["SingularREP"] = ""
     df["PluralREP"] = ""
