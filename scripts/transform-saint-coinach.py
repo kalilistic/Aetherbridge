@@ -131,8 +131,11 @@ def transform_item():
         df = merge_df_exclude_dupes(df, addl_df)
     item_custom_data = pd.read_csv("../custom-data/Item.csv")
     df = merge_df_exclude_dupes(df, item_custom_data)
-    df = df.fillna({"IsCommon": False, "IsRetired": False})
+    df = df.fillna({"IsCommon": False, "IsRetired": False, "ItemSearchCategory": 0, "Price{Low}": 0, "ItemAction": 0})
     df = df.sort_values(by=["IsCommon", "Key"], ascending=[False, False])
+    df["ItemSearchCategory"] = df["ItemSearchCategory"].astype(int)
+    df["Price{Low}"] = df["Price{Low}"].astype(int)
+    df["ItemAction"] = df["ItemAction"].astype(int)
     write_transformed_csv(df, item_dest)
 
 
@@ -149,6 +152,7 @@ def create_item_df(lang):
     df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
     df = df.drop([0, 0])
     df = remove_unused_cols(df, item_cols)
+    df["SingularSearchTerm"] = ""
     df["SingularSearchTerm"] = ""
     df["PluralSearchTerm"] = ""
     df["SingularREP"] = ""

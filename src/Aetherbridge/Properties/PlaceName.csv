@@ -1323,10 +1323,10 @@ Guilde des aventuriers""Zur Ertränkten Sorge
 1294GatekeeperGardeAnderes Areal別エリアへ移動
 1295Specialist ApprovalCertification des spécialistesSpezialisten-Prüfstelleマイスター認定
 1296Materia MasterSertissageMateria-Einsetzerマテリア師
-1297Khloe AliapohKhloe AliapohKhloe Aliapohクロ・アリアポー
+1297Wondrous TailsComptoir des Aventures imaginaires de KhloeKhloe Aliapohクロの空想帳
 1298Custom DeliveriesCommandes spécialesWunschlieferungenお得意様取引
 1299TraderÉchangeurHändlerトレーダー
-1300Aethernet ShardÉthérite insulaireInsel-Ätheryt島内エーテライト
+1300Aethernet ShardÉthériteÄtherytコンテンツ内エーテライト
 1301Dalamud's ShadowOmbrage du MétéoreMeteoritenkraterメテオの陰地
 1302The Outer CoilL'ÉcheveauÄußere Schächteバインディングコイル
 1303Central DecksSecteur central RCI-03Zentrale Decksラグナロク級三番艦：艦体中央部
@@ -2367,7 +2367,7 @@ Guilde des surineurs""Schwestern von Edelweiß
 2364A Door UnopenedLa voie scelléeSiegelpforte封印された門扉
 2365CondemnationQuartier condamnéVerbotene Hallen幽閉区画
 2366The Golden Walls of RuinSalle du trésorTheoderics Schatzkammerテオドリックの黄金堂
-2367The Drowned City of SkallaCité engloutie de SkallaDie versunkene Stadt Skalla水没遺構 スカラ
+2367The Drowned City of SkallaCité engloutie de SkallaDie versunkene Stadt Skallaスカラ
 2368The ShallowsLe bas-fondHöhere Ebene浅層
 2369The DepthsLes profondeursTiefere Ebene深層
 2370The Prima Vista Tiring RoomSalle de répétition du Prima VistaTheaterwerkstatt劇場艇プリマビスタ・大道具部屋
@@ -2556,6 +2556,8 @@ Guilde des surineurs""Schwestern von Edelweiß
 2558The Crystalline MeanHalle du JusteManufaktur der Gemeinschaftミーン工芸館取引
 2559Skybuilders' BoardPanneau d'informationsSchwarzes Brett der Himmelsstadt復興事業掲示板
 2560Kupo of FortuneGuichet du Kupo de la fortuneGlücks-Kupoクポフォーチュン
+2561Faux HollowsComptoir de Touché-tournéTraumtafelソーチョーの幻想盤
+2562Sundry SplendorsCommise aux objets de classe/jobTauschhaus der Wunder総合ショップ
 2586The Ghimlyt DarkLes Ténèbres de GhimlytGhimlyt-Finsternisギムリトダーク
 2587North Mercenary BaseBase nord des mercenairesSöldnerlager Nordノース・マーシナリーベース
 2588South Mercenary BaseBase sud des mercenairesSöldnerlager Südサウス・マーシナリーベース
@@ -3449,4 +3451,53 @@ Guilde des surineurs""Schwestern von Edelweiß
 3489Windswept CloudtopCimes éventéesSturmumtostes Wolkenmeer風吹き上がる雲海
 3490Sunken StructuresVestiges apparentsVersunkener Vorplatz遺構表層
 3491Sunken SanctumVestiges dormantsVersunkene Hallen遺構深層
+3492The Puppets' BunkerBase militaire des PantinsDie Puppenfestung人形タチノ軍事基地
+3493The Duergar MountainsLisière des montagnes des DuergarsDuergar-Gebirgeドヴェルガル山脈
+3494BunkerLa BaseDer Bunkerバンカー
+3495ElevatorAscenseurAufzugエレベーター
+3496Alien ShipVaisseau extraterrestreAlien-Schiffエイリアンシップ
+3497CraterCratèreKraterクレーター
+3498HangarHangarHangar格納庫
+3499CorridorCoursiveKorridor通路
+3500Command RoomSalle de commandementKommando司令室
+3501ShaftCage d'ascenseurSchacht縦坑
+3502Sector ASecteur ASektor AA区画
+3503Sector BSecteur BSektor BB区画
+3504Elevated DetritusPlate-forme AWrackteil A残骸A
+3505Sunken DetritusPlate-forme BWrackteil B残骸B
+3506Launch DeckAire de lancementAbschussdeck射出デッキ
+3507Core CommandSalle de commandement n°2Kommando-II第二司令室
+3508PassageCouloirKorridor通路
+3509BridgePasserelleBrücke艦橋
+35102B's RoomQuartiers de 2B2Bs Zimmer２Ｂの部屋
+3511The Heroes' GauntletTraversée de NorvrandtSchlacht um Norvrandt漆黒決戦 ノルヴラント
+3512Amh AraengAmh AraengAmh Araengアム・アレーン
+3513Il MhegIl MhegIl Mhegイル・メグ
+3514LakelandGrand-LacSeenlandレイクランド
+3515Mount Argai MinesMines du mont ArgaiMinen des Argaiアルゲ鉱山
+3516Summer BallroomBal des enfeuillésBallsaal der Grasgrummel草人たちの踊り場
+3517Illuminated PlazaCarré de l'AurorePlatz der Erleuchteten大聖堂前広場
+3518Lost TrackRails abandonnésVerfallene Lorenspur放棄された鉱山軌道
+3519Amber ValleyVallée d'AmbreBernsteintalアンバーバレー
+3520A' MilranA' MilranA' Milranア・ミルラン
+3521Sunken SkywayPasserelle noyéeVersunkener Himmelspfad水没した空中回廊
+3522Staoigh CreachStaoigh CreachStaoigh Creachストーイ・クリッヒ
+3523Sleepless VigilGuet recruSchlaflose Wacht不寝の野営地
+3524The Luminous SanctuarySanctuaire de l'AuroreErleuchtetes Refugium光耀大聖堂跡
+3525FeatherfallTombeplumeFederfall-Quartierフェザーフォール商業区
+3526Skysteel WorkshopAnnexe de la manufacture de CielacierNebengebäude der Himmelsstahl-Werkstätteスカイスチール機工房分館
+3527The AbacusL'AbaqueAllee des Abakusアバカス通り
+3528Hoarfrost HallRetraite de GivreglacéRaureif-Refugiumホアフロスト官舎
+3568The Seat of SacrificeLe Trône du SacrificeDer Kaiserliche Thron始皇帝の玉座
+3569The RiftInterstice dimensionnelInterdimensionaler Riss次元の狭間
+3570Terncliff BayLarge de RocasternesWendeklipp-Küsteターンクリフ沖
+3571TerncliffRocasternesWendeklippターンクリフ
+3572Anogg's LairChambre dérobéeAnoggs Zimmerアノッグの部屋
+3573Dawn's RespiteChambre de l'AubeZwielichtsaal未明の間
+3574Watts's AnvilGarage WattsWatts-Werkstatt für Hammerprojekteワッツハンマー・ガレージ
+3576The Puppets' BunkerBase militaire des PantinsDie Puppenfestung人形タチノ軍事基地
+3577The Duergar MountainsLisière des montagnes des DuergarsDuergar-Gebirgeドヴェルガル山脈
+3578BunkerLa BaseDer Bunkerバンカー
+3579ElevatorAscenseurAufzugエレベーター
+3580Alien ShipVaisseau extraterrestreAlien-Schiffエイリアンシップ
 2405？？？？

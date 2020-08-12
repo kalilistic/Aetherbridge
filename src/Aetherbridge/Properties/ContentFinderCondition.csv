@@ -485,7 +485,7 @@
 697796FalseDangerous When DeadDurinn, marionnettiste d'outre-tombeBegnadeter Puppenspieler至妙の傀儡子「ドゥリン」
 698796FalseRed, Fraught, and BlueLa mélodie du feu et de l'eauDie Melodie von Feuer und Wasser水と炎の歌
 699796FalseThe Catch of the SiegfriedSiegfried, le plus grand bretteur du mondeSiegfried, der beste Schwertkämpfer der Welt!世界一の剣士「ジークフリード」
-700882FalseThe Copied FactoryRéplique de l'usine désaffectéeDie kopierte Fabrik複製サレタ工場廃墟
+700882FalseThe Copied FactoryLa réplique de l'usine désaffectéeDie kopierte Fabrik複製サレタ工場廃墟
 701888FalseOnsal Hakair (Danshig Naadam)Onsal Hakair (Danshig Naadam)Onsal Hakair (Danshig Naadam)オンサル・ハカイル (終節戦)
 702893FalseVows of Virtue, Deeds of CrueltyVœux de vertu, actes de cruautéDer Wolf und der Drachenreiter白き誓約、黒き密約
 703894FalseAs the Heart BidsÀ l'écoute de soiTrubel im Traumlandこの心が望むがままに
@@ -502,14 +502,14 @@
 715902FalseEden's Verse: FulminationLes Accords d'Éden - FulminationEdens Resonanz - Entladung希望の園エデン：共鳴編1
 716906TrueEden's Verse: Fulmination (Savage)Les Accords d'Éden - Fulmination (sadique)Edens Resonanz - Entladung (episch)希望の園エデン零式：共鳴編1
 717897FalseCinder DriftLes Nuées de BrandonsRubinfeuer - Entfesselungルビーウェポン破壊作戦
-718912TrueCinder Drift (Extreme)Les Nuées de Brandons (extrême)Rubinfeuer - Trauma極ルビーウェポン破壊作戦
+718912FalseCinder Drift (Extreme)Les Nuées de Brandons (extrême)Rubinfeuer - Trauma極ルビーウェポン破壊作戦
 719903FalseEden's Verse: FurorLes Accords d'Éden - FureurEdens Resonanz - Raserei希望の園エデン：共鳴編2
 720907TrueEden's Verse: Furor (Savage)Les Accords d'Éden - Fureur (sadique)Edens Resonanz - Raserei (episch)希望の園エデン零式：共鳴編2
 721900FalseOcean FishingPêche en merAuf großer Fahrtオーシャンフィッシング
 722901Falsethe DiademLe DiadèmeDas Diadem - Erschließung雲海採集 ディアデム諸島
 723911Falsethe Bozja IncidentPrélude à la catastropheDer Bozja-Vorfallシタデル・ボズヤ蒸発事変
 724914FalseA Sleep DisturbedL'épreuve ronkaVon schlafenden Helden汝、英雄の眠り妨げるは
-725913TrueMemoria Misera (Extreme)Memoria Misera (extrême)Memoria Misera (extrem)極シタデル・ボズヤ追憶戦
+725913FalseMemoria Misera (Extreme)Memoria Misera (extrême)Memoria Misera (extrem)極シタデル・ボズヤ追憶戦
 726904FalseEden's Verse: IconoclasmLes Accords d'Éden - IconoclasmeEdens Resonanz - Bildersturm希望の園エデン：共鳴編3
 727908TrueEden's Verse: Iconoclasm (Savage)Les Accords d'Éden - Iconoclasme (sadique)Edens Resonanz - Bildersturm (episch)希望の園エデン零式：共鳴編3
 728905FalseEden's Verse: RefulgenceLes Accords d'Éden - ÉclatEdens Resonanz - Erstarrung希望の園エデン：共鳴編4
@@ -519,3 +519,11 @@
 732900FalseOcean FishingPêche en merAuf großer Fahrtオーシャンフィッシング
 733900FalseOcean FishingPêche en merAuf großer Fahrtオーシャンフィッシング
 734900FalseOcean FishingPêche en merAuf großer Fahrtオーシャンフィッシング
+736917Falsethe Puppets' BunkerLa base militaire des PantinsDie Puppenfestung人形タチノ軍事基地
+737916Falsethe Heroes' GauntletLa Traversée de NorvrandtSchlacht um Norvrandt漆黒決戦 ノルヴラント
+738922Falsethe Seat of SacrificeLe Trône du SacrificeKrieger des Lichtsウォーリア・オブ・ライト討滅戦
+739923Truethe Seat of Sacrifice (Extreme)Le Trône du Sacrifice (extrême)Krieger des Lichts (extrem)極ウォーリア・オブ・ライト討滅戦
+740925FalseSleep Now in SapphireSur la mer de saphirLuftangriff auf Werlyt飛べ！ ウェルリトへ 
+741926FalseSleep Now in SapphireSur la mer de saphirLuftangriff auf Werlyt飛べ！ ウェルリトへ 
+743932FalseFaded MemoriesSouvenir périssableVerblasste Erinnerungen色あせた記憶
+744930Truethe Akh Afah Amphitheatre (Unreal)l'Amphithéâtre d'Akh Afah (irréel)Traumprüfung - Shiva幻シヴァ討滅戦
