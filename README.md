@@ -6,7 +6,6 @@
 
 <p align="center">
   <a href="https://github.com/kalilistic/aetherbridge/blob/master/LICENSE"><img src="https://img.shields.io/github/license/kalilistic/aetherbridge?color=lightgrey"></a>
-  <a href="https://discord.gg/ftn4k7x"><img src="https://img.shields.io/badge/chat-on%20discord-7289da.svg"></a>
 </p>
 
 ## Background
