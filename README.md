@@ -1,3 +1,5 @@
+**This repo is no longer supported. I've merged this code into Kapture for easier maintenance.**
+
 <h1 align="center">
   <br><a href="https://github.com/kalilistic/aetherbridge"><img src="img/bannerIcon.png" alt="Aetherbridge"></a>
   <br>Aetherbridge<br>
